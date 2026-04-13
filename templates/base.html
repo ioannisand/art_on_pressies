@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Art on Pressies{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        blush:  '#fce8fd',
+                        petal:  '#f5b2f7',
+                        rose:   '#f293f5',
+                        orchid: '#dc84f0',
+                        grape:  '#be78de',
+                        plum:   '#3d1a5e',
+                    },
+                    fontFamily: {
+                        heading: ['Montserrat', 'sans-serif'],
+                        body:    ['Open Sans', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body class="font-body text-plum min-h-screen flex flex-col overflow-x-hidden">
+
+    <!-- Backdrop for nav drawer -->
+    <div id="nav-backdrop" class="fixed inset-0 bg-plum/30 backdrop-blur-sm z-40"></div>
+
+    <!-- Slide-out nav drawer (fixed, overlays content) -->
+    <div id="nav-drawer" class="fixed top-0 left-0 h-full w-64 bg-white/95 backdrop-blur-md shadow-2xl z-50 flex flex-col pt-20 pb-8 px-6">
+        <nav class="flex flex-col space-y-1 flex-1">
+            <a href="{% url 'home' %}"    class="py-3 px-4 rounded-xl font-heading font-semibold text-plum hover:text-grape hover:bg-petal/30 transition-colors">Home</a>
+            <a href="{% url 'gallery' %}" class="py-3 px-4 rounded-xl font-heading font-semibold text-plum hover:text-grape hover:bg-petal/30 transition-colors">Gallery</a>
+            <a href="{% url 'about' %}"    class="py-3 px-4 rounded-xl font-heading font-semibold text-plum hover:text-grape hover:bg-petal/30 transition-colors">About</a>
+            <a href="{% url 'view_cart' %}" class="py-3 px-4 rounded-xl font-heading font-semibold text-plum hover:text-grape hover:bg-petal/30 transition-colors flex items-center justify-between">
+                Cart
+                {% if cart_count %}<span class="bg-grape text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ cart_count }}</span>{% endif %}
+            </a>
+            <a href="{% url 'contact' %}"  class="mt-4 py-3 px-4 rounded-xl font-heading font-bold text-white text-center bg-gradient-to-r from-orchid to-grape hover:from-grape hover:to-plum transition-all">Get in Touch</a>
+        </nav>
+    </div>
+
+    <!-- Top navbar -->
+    <nav class="bg-white/60 backdrop-blur-md shadow-sm sticky top-0 z-30 border-b border-white/50">
+        <div class="w-full px-4 sm:px-6">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+
+                <!-- Left: Burger -->
+                <div class="flex items-center">
+                    <button id="burger-btn" class="text-plum hover:text-grape focus:outline-none transition-colors p-1">
+                        <svg id="menu-icon"  class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                        <svg id="close-icon" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Center: Logo -->
+                <div class="absolute left-1/2 -translate-x-1/2 flex items-center">
+                    <a href="{% url 'home' %}" class="flex items-center">
+                        <span class="font-heading font-900 text-xl sm:text-2xl tracking-tight whitespace-nowrap">
+                            <span class="text-grape">Art</span> <span class="text-plum">on</span> <span class="text-orchid">Pressies</span>
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Right: Search + Cart -->
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <!-- Desktop search -->
+                    <form action="{% url 'search' %}" method="get" class="hidden sm:block relative">
+                        <input type="text" name="q" placeholder="Search..."
+                               class="w-40 lg:w-52 pl-9 pr-3 py-2 rounded-full border border-petal bg-white/70 text-sm text-plum placeholder-grape/60 focus:border-orchid focus:outline-none transition-colors">
+                        <svg class="w-4 h-4 text-grape absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </form>
+
+                    <!-- Mobile search button -->
+                    <button id="search-toggle-btn" class="sm:hidden text-plum hover:text-grape focus:outline-none transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </button>
+
+                    <!-- Cart -->
+                    <a href="{% url 'view_cart' %}" class="relative text-plum hover:text-grape transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                        </svg>
+                        {% if cart_count %}
+                        <span class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-grape text-white text-[10px] font-bold
+                                     rounded-full flex items-center justify-center leading-none">
+                            {{ cart_count }}
+                        </span>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mobile search bar -->
+            <div id="mobile-search" class="hidden sm:hidden pb-3">
+                <form action="{% url 'search' %}" method="get" class="relative">
+                    <input type="text" name="q" placeholder="Search designs..."
+                           class="w-full pl-10 pr-4 py-2.5 rounded-full border border-petal bg-white/80 text-sm text-plum placeholder-grape/60 focus:border-orchid focus:outline-none">
+                    <svg class="w-4 h-4 text-grape absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="w-full px-4 sm:px-6 mt-4">
+        {% for message in messages %}
+        <div class="p-4 mb-2 rounded-lg {% if message.tags == 'success' %}bg-white/60 text-plum border-l-4 border-orchid{% else %}bg-white/60 text-plum border-l-4 border-grape{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main content -->
+    <main class="flex-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-plum/90 text-white mt-16 backdrop-blur-sm">
+        <div class="w-full px-4 sm:px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-screen-xl mx-auto">
+                <div>
+                    <h3 class="font-heading font-bold text-xl mb-4">
+                        <span class="text-petal">Art</span> on <span class="text-orchid">Pressies</span>
+                    </h3>
+                    <p class="text-petal/80 text-sm leading-relaxed">
+                        Handcrafted press-on nails designed to make every set a wearable work of art.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-heading font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="{% url 'home' %}"    class="text-petal/80 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="{% url 'gallery' %}" class="text-petal/80 hover:text-white transition-colors">Gallery</a></li>
+                        <li><a href="{% url 'about' %}"   class="text-petal/80 hover:text-white transition-colors">About</a></li>
+                        <li><a href="{% url 'contact' %}" class="text-petal/80 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-heading font-bold mb-4">Get in Touch</h4>
+                    <p class="text-petal/80 text-sm mb-3">Ready for your dream nails?</p>
+                    <a href="{% url 'contact' %}" class="inline-block bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold px-6 py-2 rounded-full hover:from-grape hover:to-plum transition-all text-sm">
+                        Enquire Now
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-white/10 mt-8 pt-8 text-center text-petal/50 text-sm max-w-screen-xl mx-auto">
+                &copy; {{ year|default:"2026" }} Art on Pressies. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

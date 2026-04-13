@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Gallery — Art on Pressies{% endblock %}
+
+{% block content %}
+<section class="bg-white w-full px-4 sm:px-6 py-16">
+    <div class="text-center mb-12">
+        <h1 class="font-heading font-900 text-3xl sm:text-5xl text-plum mb-4">Our Gallery</h1>
+        <p class="text-plum/60 text-lg">Browse our collection of handcrafted press-on nail designs</p>
+    </div>
+
+    {% if categories %}
+    <div class="flex flex-wrap justify-center gap-3 mb-12">
+        <a href="{% url 'gallery' %}"
+           class="px-5 py-2 rounded-full font-heading font-semibold text-sm transition-all {% if not active_category %}bg-plum text-white{% else %}bg-white/50 backdrop-blur-sm text-plum border border-white/60 hover:border-grape{% endif %}">
+            All
+        </a>
+        {% for cat in categories %}
+        <a href="{% url 'gallery' %}?category={{ cat.slug }}"
+           class="px-5 py-2 rounded-full font-heading font-semibold text-sm transition-all {% if active_category.slug == cat.slug %}bg-plum text-white{% else %}bg-white/50 backdrop-blur-sm text-plum border border-white/60 hover:border-grape{% endif %}">
+            {{ cat.name }}
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if designs %}
+    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+        {% for design in designs %}
+        <a href="{% url 'design_detail' design.slug %}" class="group block bg-white/50 backdrop-blur-sm rounded-2xl border border-white/60 hover:border-grape shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
+            <div class="aspect-square overflow-hidden rounded-t-2xl">
+                <img src="{{ design.image.url }}" alt="{{ design.title }}"
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="p-3 sm:p-4">
+                <span class="text-xs font-heading font-bold text-grape uppercase tracking-wider">{{ design.category.name }}</span>
+                <h3 class="font-heading font-bold text-sm sm:text-lg text-plum mt-1 group-hover:text-orchid transition-colors">{{ design.title }}</h3>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-20">
+        <p class="text-plum/50 text-xl">No designs found{% if active_category %} in "{{ active_category.name }}"{% endif %}.</p>
+        {% if active_category %}
+        <a href="{% url 'gallery' %}" class="inline-block mt-4 text-grape font-heading font-bold hover:text-plum transition-colors">View all designs</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

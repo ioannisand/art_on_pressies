@@ -1,0 +1,60 @@
+/* Art on Pressies — Pink-purple palette */
+
+html {
+    scroll-behavior: smooth;
+}
+
+.font-800 { font-weight: 800; }
+.font-900 { font-weight: 900; }
+
+/* Fixed gradient background */
+body {
+    background: linear-gradient(
+        145deg,
+        #fce8fd 0%,
+        #f5b2f7 20%,
+        #dc84f0 45%,
+        #be78de 65%,
+        #f293f5 80%,
+        #f5b2f7 100%
+    );
+    background-attachment: fixed;
+    background-size: 200% 200%;
+    animation: gradientShift 18s ease infinite;
+}
+
+@keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Form focus ring */
+input:focus,
+select:focus,
+textarea:focus {
+    box-shadow: 0 0 0 2px rgba(190, 120, 222, 0.35);
+}
+
+.aspect-square {
+    aspect-ratio: 1 / 1;
+}
+
+/* Slide-out nav drawer */
+#nav-drawer {
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#nav-drawer.open {
+    transform: translateX(0);
+}
+
+#nav-backdrop {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+}
+#nav-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}

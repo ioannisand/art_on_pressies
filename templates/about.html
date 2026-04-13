@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}About — Art on Pressies{% endblock %}
+
+{% block content %}
+
+<!-- Hero — same gradient as homepage -->
+<section class="relative overflow-hidden py-24 md:py-32" style="background: linear-gradient(to right, #fce8fd, #f5b2f7, #e096f2);">
+    <div class="absolute inset-0 opacity-20">
+        <div class="absolute top-10 left-10 w-64 h-64 bg-grape rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 right-10 w-80 h-80 bg-orchid rounded-full blur-3xl"></div>
+    </div>
+    <div class="relative w-full px-4 sm:px-6 text-center">
+        <h1 class="font-heading font-900 text-3xl sm:text-5xl md:text-7xl leading-tight mb-6
+                   bg-gradient-to-r from-[#2d0a4e] via-[#6b21a8] to-[#a855f7] bg-clip-text text-transparent">
+            About Us
+        </h1>
+        <p class="text-plum/70 text-lg sm:text-xl max-w-2xl mx-auto">The story behind the art</p>
+    </div>
+</section>
+
+<!-- Story -->
+<section class="w-full px-4 sm:px-6 py-20">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white/50 backdrop-blur-sm rounded-3xl border border-white/60 p-8 sm:p-12 space-y-6 text-plum/80 text-lg leading-relaxed">
+            <p>
+                <span class="font-heading font-bold text-plum text-2xl">Art on Pressies</span> was born from a love of creativity and self-expression. What started as a hobby — painting tiny canvases on press-on nails — quickly grew into a passion project dedicated to crafting wearable art for every occasion.
+            </p>
+            <p>
+                Every set is designed and handcrafted with care. From bold graphic patterns to delicate detailed work, we believe your nails should be as unique as you are. No two sets are ever exactly the same.
+            </p>
+            <p>
+                We use high-quality materials and take pride in creating press-ons that not only look stunning but are comfortable, durable, and easy to apply at home.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Values -->
+<section class="w-full px-4 sm:px-6 pb-16">
+    <div class="max-w-4xl mx-auto">
+        <h2 class="font-heading font-800 text-2xl sm:text-3xl text-center text-plum mb-10">What We Stand For</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="text-center p-8 bg-white/50 backdrop-blur-sm rounded-2xl border border-white/60 hover:shadow-md transition-shadow">
+                <div class="w-16 h-16 bg-gradient-to-br from-rose to-orchid mx-auto mb-5 flex items-center justify-center rounded-full shadow-sm">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                </div>
+                <h3 class="font-heading font-bold text-xl text-plum mb-2">Made with Love</h3>
+                <p class="text-plum/60 text-sm leading-relaxed">Every set is handcrafted with attention to detail and genuine passion.</p>
+            </div>
+            <div class="text-center p-8 bg-white/50 backdrop-blur-sm rounded-2xl border border-white/60 hover:shadow-md transition-shadow">
+                <div class="w-16 h-16 bg-gradient-to-br from-orchid to-grape mx-auto mb-5 flex items-center justify-center rounded-full shadow-sm">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                    </svg>
+                </div>
+                <h3 class="font-heading font-bold text-xl text-plum mb-2">Unique Designs</h3>
+                <p class="text-plum/60 text-sm leading-relaxed">Original art on every nail — no mass production, no copies.</p>
+            </div>
+            <div class="text-center p-8 bg-white/50 backdrop-blur-sm rounded-2xl border border-white/60 hover:shadow-md transition-shadow">
+                <div class="w-16 h-16 bg-gradient-to-br from-grape to-plum mx-auto mb-5 flex items-center justify-center rounded-full shadow-sm">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                    </svg>
+                </div>
+                <h3 class="font-heading font-bold text-xl text-plum mb-2">Quality First</h3>
+                <p class="text-plum/60 text-sm leading-relaxed">Premium materials for nails that last and feel amazing.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="w-full px-4 sm:px-6 pb-24 text-center">
+    <div class="bg-white/30 backdrop-blur-sm rounded-3xl border border-white/50 px-8 py-16 max-w-3xl mx-auto">
+        <h2 class="font-heading font-800 text-3xl text-plum mb-4">Ready to Get Started?</h2>
+        <p class="text-plum/70 mb-8">Browse our gallery or get in touch for a custom set.</p>
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="{% url 'gallery' %}" class="bg-plum text-white font-heading font-bold px-8 py-3 rounded-full hover:bg-grape transition-colors">View Gallery</a>
+            <a href="{% url 'contact' %}" class="bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold px-8 py-3 rounded-full hover:from-grape hover:to-plum transition-all">Enquire Now</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

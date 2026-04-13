@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact — Art on Pressies{% endblock %}
+
+{% block content %}
+<section class="relative overflow-hidden py-20 text-center">
+    <div class="absolute inset-0 bg-plum/70"></div>
+    <div class="absolute inset-0 opacity-25">
+        <div class="absolute top-0 left-1/3 w-96 h-96 bg-rose rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-1/4 w-72 h-72 bg-orchid rounded-full blur-3xl"></div>
+    </div>
+    <div class="relative w-full px-4 sm:px-6">
+        <h1 class="font-heading font-900 text-3xl sm:text-5xl text-white mb-6">Get in <span class="text-petal">Touch</span></h1>
+        <p class="text-petal text-xl max-w-2xl mx-auto">Have a design in mind? Want a custom set? Drop us a message and we'll get back to you.</p>
+    </div>
+</section>
+
+<section class="w-full px-4 sm:px-6 py-16">
+    <form method="post" class="space-y-6 max-w-2xl mx-auto">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div>
+            <label for="{{ field.id_for_label }}" class="block font-heading font-semibold text-plum mb-2">
+                {{ field.label }}
+                {% if field.field.required %}<span class="text-grape">*</span>{% endif %}
+            </label>
+            {{ field }}
+            {% if field.errors %}
+            <ul class="mt-1 text-sm text-grape">
+                {% for error in field.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="pt-4">
+            <button type="submit" class="w-full bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold px-8 py-4 text-lg rounded-full hover:from-grape hover:to-plum transition-all">
+                Send Enquiry
+            </button>
+        </div>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,126 @@
+from django.db import models
+
+
+class SiteSettings(models.Model):
+    logo = models.ImageField(upload_to='site/', blank=True)
+    site_name = models.CharField(max_length=200, default='Art on Pressies')
+
+    class Meta:
+        verbose_name = 'Site Settings'
+        verbose_name_plural = 'Site Settings'
+
+    def __str__(self):
+        return 'Site Settings'
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+
+    class Meta:
+        verbose_name_plural = 'categories'
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
+class NailDesign(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='designs/')
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name='designs'
+    )
+    featured = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    available_shapes    = models.ManyToManyField('NailShape',   blank=True, related_name='designs')
+    available_size_sets = models.ManyToManyField('NailSizeSet', blank=True, related_name='designs')
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.title
+
+
+class NailShape(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
+class NailSize(models.Model):
+    """A single nail-width measurement in mm (e.g. 9, 10, 11 …)."""
+    width_mm = models.PositiveSmallIntegerField(unique=True)
+
+    class Meta:
+        ordering = ['width_mm']
+
+    def __str__(self):
+        return f'{self.width_mm} mm'
+
+
+class NailSizeSet(models.Model):
+    """
+    A named set of per-finger widths (thumb → index → middle → ring → pinky).
+    Standard sets: XS, S, M, L, XL. Admins can also create custom sets.
+    """
+    name       = models.CharField(max_length=30)
+    sort_order = models.PositiveSmallIntegerField(default=0)
+    thumb  = models.ForeignKey(NailSize, related_name='thumb_sets',  on_delete=models.PROTECT)
+    index  = models.ForeignKey(NailSize, related_name='index_sets',  on_delete=models.PROTECT)
+    middle = models.ForeignKey(NailSize, related_name='middle_sets', on_delete=models.PROTECT)
+    ring   = models.ForeignKey(NailSize, related_name='ring_sets',   on_delete=models.PROTECT)
+    pinky  = models.ForeignKey(NailSize, related_name='pinky_sets',  on_delete=models.PROTECT)
+
+    class Meta:
+        ordering = ['sort_order', 'name']
+
+    @property
+    def measurements(self):
+        return (
+            self.thumb.width_mm, self.index.width_mm, self.middle.width_mm,
+            self.ring.width_mm,  self.pinky.width_mm,
+        )
+
+    @property
+    def measurements_display(self):
+        return ' · '.join(f'{w}' for w in self.measurements) + ' mm'
+
+    def __str__(self):
+        return f'{self.name}  ({self.measurements_display})'
+
+
+class Enquiry(models.Model):
+    name = models.CharField(max_length=150)
+    email = models.EmailField()
+    phone = models.CharField(max_length=30, blank=True)
+    design = models.ForeignKey(
+        NailDesign, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='enquiries'
+    )
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'enquiries'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.name} — {self.created_at:%Y-%m-%d}'

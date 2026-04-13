@@ -1,0 +1,283 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ design.title }} — Art on Pressies{% endblock %}
+
+{% block content %}
+<section class="w-full px-4 sm:px-6 py-16" style="background: linear-gradient(to right, #fce8fd, #f5b2f7, #e096f2);">
+    <div class="mb-8">
+        <a href="{% url 'gallery' %}" class="text-plum font-heading font-semibold hover:text-grape transition-colors">&larr; Back to Gallery</a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+        <!-- Image -->
+        <div class="overflow-hidden rounded-2xl border border-white/60 shadow-sm lg:max-w-sm xl:max-w-md mx-auto w-full">
+            <img src="{{ design.image.url }}" alt="{{ design.title }}" class="w-full h-auto object-cover">
+        </div>
+
+        <!-- Details + variant selectors -->
+        <div class="flex flex-col justify-start">
+            <span class="text-sm font-heading font-bold text-plum uppercase tracking-wider mb-2">{{ design.category.name }}</span>
+            <h1 class="font-heading font-900 text-2xl sm:text-4xl md:text-5xl text-plum mb-4">{{ design.title }}</h1>
+
+            {% if design.description %}
+            <p class="text-plum/70 text-base leading-relaxed mb-8">{{ design.description }}</p>
+            {% endif %}
+
+            <!-- ── Shape selector ── -->
+            {% if design.available_shapes.all %}
+            <div class="mb-7">
+                <p class="font-heading font-bold text-plum mb-3">Shape</p>
+                <div class="flex flex-wrap gap-2">
+                    {% for shape in design.available_shapes.all %}
+                    <button type="button" data-variant="shape" data-value="{{ shape.slug }}"
+                            class="variant-btn px-4 py-2 rounded-full border-2 border-plum/30 bg-white/60
+                                   text-plum text-sm font-heading font-semibold
+                                   hover:border-grape hover:bg-white/80 transition-all">
+                        {{ shape.name }}
+                    </button>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- ── Size selector ── -->
+            {% if design.available_size_sets.all %}
+            <div class="mb-8">
+
+                <!-- Label row with help link -->
+                <div class="flex items-center gap-3 mb-3">
+                    <p class="font-heading font-bold text-plum">Size</p>
+                    <button type="button" id="sizing-help-btn"
+                            class="flex items-center gap-1 text-xs font-heading font-semibold text-grape
+                                   hover:text-plum underline underline-offset-2 transition-colors">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3
+                                     0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093
+                                     M12 17h.01"/>
+                        </svg>
+                        Need help sizing?
+                    </button>
+                </div>
+
+                <div class="flex flex-wrap gap-2" id="size-options">
+                    {% for ss in design.available_size_sets.all %}
+                    <button type="button" data-variant="size" data-value="{{ ss.name }}"
+                            class="variant-btn group relative px-4 py-2 rounded-full border-2 border-plum/30 bg-white/60
+                                   text-plum text-sm font-heading font-semibold
+                                   hover:border-grape hover:bg-white/80 transition-all">
+                        {{ ss.name }}
+                        <span class="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2
+                                     whitespace-nowrap rounded-xl bg-plum text-white text-xs px-3 py-2
+                                     opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-lg">
+                            <span class="block font-bold mb-1">{{ ss.name }}</span>
+                            <span class="block">{{ ss.thumb.width_mm }} · {{ ss.index.width_mm }} · {{ ss.middle.width_mm }} · {{ ss.ring.width_mm }} · {{ ss.pinky.width_mm }} mm</span>
+                            <span class="block text-white/60 mt-0.5">thumb · index · middle · ring · pinky</span>
+                        </span>
+                    </button>
+                    {% endfor %}
+
+                    <!-- Custom size button -->
+                    <button type="button" id="custom-size-btn"
+                            class="px-4 py-2 rounded-full border-2 border-dashed border-plum/40 bg-white/40
+                                   text-plum text-sm font-heading font-semibold
+                                   hover:border-grape hover:bg-white/70 transition-all flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Custom
+                    </button>
+                </div>
+                <p class="text-xs text-plum/50 mt-2">Hover a size to see per-finger measurements.</p>
+            </div>
+            {% endif %}
+
+            <!-- ── Add to Cart form ── -->
+            <form method="post" action="{% url 'add_to_cart' design.slug %}" class="mb-6">
+                {% csrf_token %}
+                <input type="hidden" name="shape_slug"   id="input-shape-slug">
+                <input type="hidden" name="shape_name"   id="input-shape-name">
+                <input type="hidden" name="size_name"    id="input-size-name">
+                <input type="hidden" name="custom_label" id="input-custom-label">
+
+                <button type="submit"
+                        class="w-full sm:w-auto bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
+                               px-8 py-4 text-lg rounded-full hover:from-grape hover:to-plum transition-all
+                               flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                    </svg>
+                    Add to Cart
+                </button>
+            </form>
+
+            <!-- ── Actions ── -->
+            <div class="flex flex-wrap gap-4">
+                <a href="{% url 'contact' %}?design={{ design.slug }}"
+                   class="border-2 border-plum text-plum font-heading font-bold px-5 py-3 sm:px-8 sm:py-4 text-base sm:text-lg rounded-full hover:bg-plum hover:text-white transition-colors">
+                    Enquire About This Design
+                </a>
+                <a href="{% url 'gallery' %}?category={{ design.category.slug }}"
+                   class="border-2 border-grape text-grape font-heading font-bold px-5 py-3 sm:px-8 sm:py-4 text-base sm:text-lg rounded-full hover:bg-grape hover:text-white transition-colors">
+                    More {{ design.category.name }}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     MODAL: Sizing Instructions
+══════════════════════════════════════════════════════════ -->
+<div id="sizing-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-plum/40 backdrop-blur-sm" id="sizing-modal-backdrop"></div>
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between p-5 border-b border-gray-100">
+            <h3 class="font-heading font-bold text-plum text-lg">How to Find Your Size</h3>
+            <button id="sizing-modal-close" class="text-plum/50 hover:text-plum transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div class="p-5">
+            <img src="{{ MEDIA_URL }}sizing_instructions.jpg" alt="Sizing instructions" class="w-full rounded-xl">
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     MODAL: Custom Size
+══════════════════════════════════════════════════════════ -->
+<div id="custom-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-plum/40 backdrop-blur-sm" id="custom-modal-backdrop"></div>
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full">
+        <div class="flex items-center justify-between p-5 border-b border-gray-100">
+            <h3 class="font-heading font-bold text-plum text-lg">Custom Size</h3>
+            <button id="custom-modal-close" class="text-plum/50 hover:text-plum transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div class="p-5 space-y-4">
+            <p class="text-sm text-plum/60">Choose a width (mm) for each finger.</p>
+
+            {% for finger_label in fingers %}
+            <div class="flex items-center justify-between">
+                <label class="font-heading font-semibold text-plum text-sm w-16">{{ finger_label }}</label>
+                <select class="custom-finger-select flex-1 ml-4 px-3 py-2 rounded-xl border border-gray-200
+                               bg-white text-plum text-sm focus:border-orchid focus:outline-none">
+                    {% for mm in nail_sizes %}
+                    <option value="{{ mm }}">{{ mm }} mm</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endfor %}
+
+            <button type="button" id="custom-confirm-btn"
+                    class="w-full mt-2 bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
+                           py-3 rounded-full hover:from-grape hover:to-plum transition-all">
+                Confirm Custom Size
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ── Variant selection ────────────────────────────────────────
+document.querySelectorAll('.variant-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        const group = btn.dataset.variant;
+        document.querySelectorAll(`[data-variant="${group}"]`).forEach(function (b) {
+            b.classList.remove('border-grape', 'bg-white', 'shadow-md');
+            b.classList.add('border-plum/30', 'bg-white/60');
+        });
+        btn.classList.remove('border-plum/30', 'bg-white/60');
+        btn.classList.add('border-grape', 'bg-white', 'shadow-md');
+
+        // Keep hidden form inputs in sync
+        if (group === 'shape') {
+            document.getElementById('input-shape-slug').value = btn.dataset.value;
+            document.getElementById('input-shape-name').value = btn.textContent.trim();
+        }
+        if (group === 'size') {
+            document.getElementById('input-size-name').value   = btn.dataset.value;
+            document.getElementById('input-custom-label').value = '';
+        }
+    });
+});
+
+// ── Modal helpers ────────────────────────────────────────────
+function openModal(id) {
+    const m = document.getElementById(id);
+    m.classList.remove('hidden');
+    m.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+    const m = document.getElementById(id);
+    m.classList.add('hidden');
+    m.classList.remove('flex');
+    document.body.style.overflow = '';
+}
+
+// ── Sizing instructions modal ────────────────────────────────
+document.getElementById('sizing-help-btn').addEventListener('click', function () {
+    openModal('sizing-modal');
+});
+document.getElementById('sizing-modal-close').addEventListener('click', function () {
+    closeModal('sizing-modal');
+});
+document.getElementById('sizing-modal-backdrop').addEventListener('click', function () {
+    closeModal('sizing-modal');
+});
+
+// ── Custom size modal ────────────────────────────────────────
+document.getElementById('custom-size-btn').addEventListener('click', function () {
+    openModal('custom-modal');
+});
+document.getElementById('custom-modal-close').addEventListener('click', function () {
+    closeModal('custom-modal');
+});
+document.getElementById('custom-modal-backdrop').addEventListener('click', function () {
+    closeModal('custom-modal');
+});
+
+// ── Confirm custom size ──────────────────────────────────────
+document.getElementById('custom-confirm-btn').addEventListener('click', function () {
+    const selects = document.querySelectorAll('.custom-finger-select');
+    const labels  = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky'];
+    const values  = Array.from(selects).map(s => s.value);
+    const summary = values.map((v, i) => `${labels[i]}: ${v}mm`).join('  ·  ');
+
+    // Deselect all standard size buttons
+    document.querySelectorAll('[data-variant="size"]').forEach(function (b) {
+        b.classList.remove('border-grape', 'bg-white', 'shadow-md');
+        b.classList.add('border-plum/30', 'bg-white/60');
+    });
+
+    // Highlight the Custom button and update its label
+    const customBtn = document.getElementById('custom-size-btn');
+    customBtn.classList.remove('border-plum/40', 'bg-white/40', 'border-dashed');
+    customBtn.classList.add('border-grape', 'bg-white', 'shadow-md');
+    customBtn.innerHTML = `<span class="text-xs leading-tight">${values.join(' · ')} mm</span>`;
+
+    // Update hidden form inputs for custom size
+    const customLabel = values.map((v, i) => `${labels[i]}:${v}`).join('|');
+    document.getElementById('input-size-name').value    = 'Custom';
+    document.getElementById('input-custom-label').value = customLabel;
+
+    closeModal('custom-modal');
+});
+
+// Close modals on Escape
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        closeModal('sizing-modal');
+        closeModal('custom-modal');
+    }
+});
+</script>
+{% endblock %}
