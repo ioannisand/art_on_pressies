@@ -21,4 +21,4 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py seed_demo && gunicorn --bind :8000 --workers 2 art_on_pressies.wsgi"]
+CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn --bind :8000 --workers 2 art_on_pressies.wsgi"]
