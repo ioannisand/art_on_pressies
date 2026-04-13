@@ -3,7 +3,7 @@
 import os
 import sys
 
-
+# jsut small change
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'art_on_pressies.settings')
