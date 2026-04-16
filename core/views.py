@@ -224,10 +224,21 @@ def create_checkout_session(request):
 
 
 def checkout_success(request):
-    session_id = request.GET.get('session_id', '')
-    order = Order.objects.filter(stripe_session_id=session_id).first() if session_id else None
-    Cart(request).clear()
-    return render(request, 'checkout_success.html', {'order': order})
+    import sys
+    import traceback
+    try:
+        session_id = request.GET.get('session_id', '')
+        print(f'[checkout-success] session_id={session_id}', file=sys.stderr, flush=True)
+        order = Order.objects.filter(stripe_session_id=session_id).first() if session_id else None
+        print(f'[checkout-success] order={order.pk if order else None}', file=sys.stderr, flush=True)
+        Cart(request).clear()
+        return render(request, 'checkout_success.html', {'order': order})
+    except Exception as exc:
+        print(f'[checkout-success] UNHANDLED: {type(exc).__name__}: {exc}',
+              file=sys.stderr, flush=True)
+        traceback.print_exc(file=sys.stderr)
+        sys.stderr.flush()
+        raise
 
 
 def checkout_cancel(request):
