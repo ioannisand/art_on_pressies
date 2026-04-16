@@ -1,3 +1,6 @@
+from decimal import Decimal
+
+
 class Cart:
     SESSION_KEY = 'cart'
 
@@ -11,7 +14,8 @@ class Cart:
     # ── public API ────────────────────────────────────────────────────────────
 
     def add(self, *, design_slug, design_title, design_image_url,
-            shape_slug, shape_name, size_name, custom_label=None, qty=1):
+            shape_slug, shape_name, size_name, custom_label=None, qty=1,
+            unit_price='0'):
         # custom_label arrives as "Thumb:14|Index:10|..." — convert to display form
         custom_display = None
         if custom_label:
@@ -37,6 +41,7 @@ class Cart:
                 'size_name': size_name,
                 'custom_label': custom_display,
                 'qty': qty,
+                'unit_price': str(unit_price),
             }
         self._save()
 
@@ -58,11 +63,23 @@ class Cart:
 
     @property
     def items(self):
-        return list(self._cart['items'].values())
+        result = []
+        for item in self._cart['items'].values():
+            unit = Decimal(item.get('unit_price', '0'))
+            line_total = unit * item['qty']
+            result.append({**item, 'line_total': line_total, 'unit_price_decimal': unit})
+        return result
 
     @property
     def count(self):
         return sum(item['qty'] for item in self._cart['items'].values())
+
+    @property
+    def total(self):
+        return sum(
+            (Decimal(i.get('unit_price', '0')) * i['qty'] for i in self._cart['items'].values()),
+            Decimal('0'),
+        )
 
     # ── helpers ───────────────────────────────────────────────────────────────
 

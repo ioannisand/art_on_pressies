@@ -34,9 +34,10 @@
                         <p class="text-xs text-plum/60 mt-0.5">
                             {{ item.shape_name|default:"—" }} &middot;
                             {% if item.custom_label %}Custom{% else %}{{ item.size_name|default:"—" }}{% endif %}
+                            &middot; x{{ item.qty }}
                         </p>
                     </div>
-                    <span class="font-heading font-bold text-plum/70 text-sm shrink-0">x{{ item.qty }}</span>
+                    <span class="font-heading font-bold text-plum text-sm shrink-0">£{{ item.line_total|floatformat:2 }}</span>
                 </li>
                 {% endfor %}
             </ul>
@@ -44,6 +45,10 @@
             <div class="px-6 py-4 border-t border-white/60 flex justify-between items-center">
                 <span class="font-heading font-semibold text-plum/70 text-sm">Total items</span>
                 <span class="font-heading font-bold text-plum">{{ cart.count }}</span>
+            </div>
+            <div class="px-6 py-4 border-t border-white/60 flex justify-between items-center bg-white/40">
+                <span class="font-heading font-bold text-plum">Total</span>
+                <span class="font-heading font-900 text-2xl text-plum">£{{ cart.total|floatformat:2 }}</span>
             </div>
         </div>
 

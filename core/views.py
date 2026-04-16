@@ -98,6 +98,7 @@ def add_to_cart(request, slug):
         shape_name=shape_name,
         size_name=size_name if not custom_label else 'Custom',
         custom_label=custom_label,
+        unit_price=str(design.price),
     )
     messages.success(request, f'"{design.title}" added to your cart.')
     return redirect('design_detail', slug=slug)

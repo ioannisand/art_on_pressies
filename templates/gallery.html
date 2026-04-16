@@ -35,6 +35,7 @@
             <div class="p-3 sm:p-4">
                 <span class="text-xs font-heading font-bold text-grape uppercase tracking-wider">{{ design.category.name }}</span>
                 <h3 class="font-heading font-bold text-sm sm:text-lg text-plum mt-1 group-hover:text-orchid transition-colors">{{ design.title }}</h3>
+                <p class="font-heading font-bold text-plum/80 text-sm sm:text-base mt-1">£{{ design.price|floatformat:2 }}</p>
             </div>
         </a>
         {% endfor %}

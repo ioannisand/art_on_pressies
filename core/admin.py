@@ -52,13 +52,13 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(NailDesign)
 class NailDesignAdmin(admin.ModelAdmin):
-    list_display = ['title', 'category', 'featured', 'image_preview', 'created_at']
+    list_display = ['title', 'category', 'price', 'featured', 'image_preview', 'created_at']
     list_filter = ['category', 'featured']
     search_fields = ['title', 'description']
     prepopulated_fields = {'slug': ('title',)}
-    list_editable = ['featured']
+    list_editable = ['price', 'featured']
     fields = [
-        'title', 'slug', 'category', 'description',
+        'title', 'slug', 'category', 'description', 'price',
         'image', 'current_image', 'featured',
         'available_shapes', 'available_size_sets',
     ]

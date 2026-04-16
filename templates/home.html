@@ -47,6 +47,7 @@
             <div class="p-2 sm:p-3">
                 <span class="text-xs font-heading font-bold text-grape uppercase tracking-wider leading-none">{{ design.category.name }}</span>
                 <h3 class="font-heading font-bold text-xs sm:text-sm text-plum mt-0.5 group-hover:text-orchid transition-colors leading-snug">{{ design.title }}</h3>
+                <p class="font-heading font-bold text-plum/80 text-xs sm:text-sm mt-0.5">£{{ design.price|floatformat:2 }}</p>
             </div>
         </a>
         {% endfor %}
