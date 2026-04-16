@@ -237,40 +237,57 @@ def checkout_cancel(request):
 @csrf_exempt
 @require_POST
 def stripe_webhook(request):
-    stripe.api_key = settings.STRIPE_SECRET_KEY
-    payload = request.body
-    sig_header = request.headers.get('Stripe-Signature', '')
-
+    import sys
+    import traceback
     try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
-        )
-    except (ValueError, stripe.error.SignatureVerificationError):
-        return HttpResponseBadRequest('Invalid webhook signature')
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        payload = request.body
+        sig_header = request.headers.get('Stripe-Signature', '')
 
-    if event['type'] == 'checkout.session.completed':
-        session = event['data']['object']
-        order = Order.objects.filter(stripe_session_id=session['id']).first()
-        if order and order.status != Order.STATUS_PAID:
-            order.status = Order.STATUS_PAID
-            order.paid_at = timezone.now()
-            order.stripe_payment_intent_id = session.get('payment_intent') or ''
-            customer = session.get('customer_details') or {}
-            order.customer_email = customer.get('email') or ''
-            order.customer_name = customer.get('name') or ''
-            shipping_details = session.get('shipping_details') or {}
-            addr = shipping_details.get('address') or {}
-            if addr:
-                lines = [
-                    addr.get('line1') or '',
-                    addr.get('line2') or '',
-                    f"{addr.get('postal_code') or ''} {addr.get('city') or ''}".strip(),
-                    addr.get('country') or '',
-                ]
-                order.shipping_address = '\n'.join(l for l in lines if l.strip())
-            order.save()
+        try:
+            event = stripe.Webhook.construct_event(
+                payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
+            )
+        except (ValueError, stripe.error.SignatureVerificationError) as sig_err:
+            print(f'[stripe-webhook] signature error: {sig_err}', file=sys.stderr, flush=True)
+            return HttpResponseBadRequest('Invalid webhook signature')
 
-    return HttpResponse(status=200)
+        print(f'[stripe-webhook] received event type={event["type"]} id={event["id"]}',
+              file=sys.stderr, flush=True)
+
+        if event['type'] == 'checkout.session.completed':
+            session = event['data']['object']
+            order = Order.objects.filter(stripe_session_id=session['id']).first()
+            if order and order.status != Order.STATUS_PAID:
+                order.status = Order.STATUS_PAID
+                order.paid_at = timezone.now()
+                order.stripe_payment_intent_id = session.get('payment_intent') or ''
+                customer = session.get('customer_details') or {}
+                order.customer_email = customer.get('email') or ''
+                order.customer_name = customer.get('name') or ''
+                shipping_details = session.get('shipping_details') or {}
+                addr = shipping_details.get('address') or {}
+                if addr:
+                    lines = [
+                        addr.get('line1') or '',
+                        addr.get('line2') or '',
+                        f"{addr.get('postal_code') or ''} {addr.get('city') or ''}".strip(),
+                        addr.get('country') or '',
+                    ]
+                    order.shipping_address = '\n'.join(l for l in lines if l.strip())
+                order.save()
+                print(f'[stripe-webhook] order {order.pk} marked paid', file=sys.stderr, flush=True)
+            else:
+                print(f'[stripe-webhook] order not found or already paid for session {session.get("id")}',
+                      file=sys.stderr, flush=True)
+
+        return HttpResponse(status=200)
+    except Exception as exc:
+        print(f'[stripe-webhook] UNHANDLED: {type(exc).__name__}: {exc}',
+              file=sys.stderr, flush=True)
+        traceback.print_exc(file=sys.stderr)
+        sys.stderr.flush()
+        raise
 
 
 def contact(request):
