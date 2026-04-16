@@ -108,6 +108,63 @@ class NailSizeSet(models.Model):
         return f'{self.name}  ({self.measurements_display})'
 
 
+class Order(models.Model):
+    STATUS_PENDING = 'pending'
+    STATUS_PAID = 'paid'
+    STATUS_CANCELLED = 'cancelled'
+    STATUS_FAILED = 'failed'
+    STATUS_CHOICES = [
+        (STATUS_PENDING, 'Pending'),
+        (STATUS_PAID, 'Paid'),
+        (STATUS_CANCELLED, 'Cancelled'),
+        (STATUS_FAILED, 'Failed'),
+    ]
+
+    stripe_session_id = models.CharField(max_length=200, unique=True, blank=True, null=True)
+    stripe_payment_intent_id = models.CharField(max_length=200, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
+
+    customer_email = models.EmailField(blank=True)
+    customer_name = models.CharField(max_length=200, blank=True)
+    shipping_address = models.TextField(blank=True)
+
+    subtotal = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    shipping = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    total = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    currency = models.CharField(max_length=3, default='eur')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    paid_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'Order #{self.pk} ({self.status})'
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    design = models.ForeignKey(
+        NailDesign, on_delete=models.SET_NULL, null=True, blank=True, related_name='order_items'
+    )
+    design_slug = models.CharField(max_length=200)
+    design_title = models.CharField(max_length=200)
+    design_image_url = models.CharField(max_length=500, blank=True)
+    shape_name = models.CharField(max_length=100, blank=True)
+    size_name = models.CharField(max_length=100, blank=True)
+    custom_label = models.CharField(max_length=200, blank=True)
+    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
+    qty = models.PositiveIntegerField(default=1)
+
+    @property
+    def line_total(self):
+        return self.unit_price * self.qty
+
+    def __str__(self):
+        return f'{self.qty} × {self.design_title}'
+
+
 class Enquiry(models.Model):
     name = models.CharField(max_length=150)
     email = models.EmailField()

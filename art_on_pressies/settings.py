@@ -31,6 +31,14 @@ CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost'
 # Base directory for persistent data (DB + media). Override in production via DATA_DIR env var.
 DATA_DIR = Path(os.environ.get('DATA_DIR', BASE_DIR))
 
+# Stripe
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', '')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
+STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
+CURRENCY = 'eur'
+SHIPPING_FEE_CENTS = 200
+ALLOWED_SHIPPING_COUNTRIES = ['GR']
+
 
 # Application definition
 

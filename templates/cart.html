@@ -48,8 +48,8 @@
                     {% endif %}
                 </p>
                 <p class="font-heading font-bold text-plum text-base mb-3">
-                    £{{ item.line_total|floatformat:2 }}
-                    {% if item.qty > 1 %}<span class="text-xs font-normal text-plum/50 ml-1">(£{{ item.unit_price_decimal|floatformat:2 }} each)</span>{% endif %}
+                    €{{ item.line_total|floatformat:2 }}
+                    {% if item.qty > 1 %}<span class="text-xs font-normal text-plum/50 ml-1">(€{{ item.unit_price_decimal|floatformat:2 }} each)</span>{% endif %}
                 </p>
 
                 <!-- Qty + Remove row -->
@@ -88,7 +88,7 @@
         <!-- Subtotal -->
         <div class="bg-white/60 backdrop-blur-sm rounded-2xl border border-white/60 p-5 flex justify-between items-center">
             <span class="font-heading font-semibold text-plum/70">Subtotal</span>
-            <span class="font-heading font-900 text-2xl text-plum">£{{ cart.total|floatformat:2 }}</span>
+            <span class="font-heading font-900 text-2xl text-plum">€{{ cart.total|floatformat:2 }}</span>
         </div>
 
         <!-- Footer actions -->

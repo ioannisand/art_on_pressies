@@ -37,41 +37,53 @@
                             &middot; x{{ item.qty }}
                         </p>
                     </div>
-                    <span class="font-heading font-bold text-plum text-sm shrink-0">£{{ item.line_total|floatformat:2 }}</span>
+                    <span class="font-heading font-bold text-plum text-sm shrink-0">€{{ item.line_total|floatformat:2 }}</span>
                 </li>
                 {% endfor %}
             </ul>
 
             <div class="px-6 py-4 border-t border-white/60 flex justify-between items-center">
-                <span class="font-heading font-semibold text-plum/70 text-sm">Total items</span>
-                <span class="font-heading font-bold text-plum">{{ cart.count }}</span>
+                <span class="font-heading font-semibold text-plum/70 text-sm">Subtotal ({{ cart.count }} item{{ cart.count|pluralize }})</span>
+                <span class="font-heading font-bold text-plum">€{{ cart.total|floatformat:2 }}</span>
+            </div>
+            <div class="px-6 py-3 border-t border-white/60 flex justify-between items-center">
+                <span class="font-heading font-semibold text-plum/70 text-sm">Shipping (Greece)</span>
+                <span class="font-heading font-bold text-plum">€{{ shipping|floatformat:2 }}</span>
             </div>
             <div class="px-6 py-4 border-t border-white/60 flex justify-between items-center bg-white/40">
                 <span class="font-heading font-bold text-plum">Total</span>
-                <span class="font-heading font-900 text-2xl text-plum">£{{ cart.total|floatformat:2 }}</span>
+                <span class="font-heading font-900 text-2xl text-plum">€{{ grand_total|floatformat:2 }}</span>
             </div>
         </div>
 
-        <!-- Next steps notice -->
-        <div class="bg-white/50 backdrop-blur-sm rounded-2xl border border-white/60 p-6 mb-8 text-center">
+        <!-- Pay with card -->
+        <div class="bg-white/50 backdrop-blur-sm rounded-2xl border border-white/60 p-6 mb-6 text-center">
             <div class="w-12 h-12 bg-gradient-to-br from-orchid to-grape rounded-full mx-auto mb-4 flex items-center justify-center">
                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"/>
                 </svg>
             </div>
-            <h3 class="font-heading font-bold text-plum text-xl mb-2">Place Your Order</h3>
+            <h3 class="font-heading font-bold text-plum text-xl mb-2">Secure Checkout</h3>
             <p class="text-plum/60 text-sm leading-relaxed mb-6">
-                We handle every order personally. Send us your selections and we'll confirm availability, discuss finishing details, and arrange payment with you directly.
+                Pay securely with your card via Stripe. We ship to Greece.
             </p>
+            <form method="post" action="{% url 'create_checkout_session' %}">
+                {% csrf_token %}
+                <button type="submit"
+                        class="inline-block bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
+                               px-8 py-4 rounded-full hover:from-grape hover:to-plum transition-all text-base">
+                    Pay with Card
+                </button>
+            </form>
+        </div>
 
-            <!-- Build enquiry message -->
-            {% with items=cart.items %}
+        <!-- Enquiry alternative -->
+        <div class="text-center mb-8">
+            <p class="text-plum/60 text-sm mb-2">Have a question first?</p>
             <a href="{% url 'contact' %}"
-               class="inline-block bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
-                      px-8 py-4 rounded-full hover:from-grape hover:to-plum transition-all text-base">
-                Send Enquiry to Order
+               class="inline-block text-grape font-heading font-semibold hover:text-plum underline underline-offset-2 transition-colors">
+                Send an enquiry instead
             </a>
-            {% endwith %}
         </div>
 
         <!-- Back to cart -->

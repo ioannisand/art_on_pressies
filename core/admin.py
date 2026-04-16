@@ -1,7 +1,10 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import SiteSettings, Category, NailDesign, Enquiry, NailShape, NailSize, NailSizeSet
+from .models import (
+    SiteSettings, Category, NailDesign, Enquiry,
+    NailShape, NailSize, NailSizeSet, Order, OrderItem,
+)
 
 
 @admin.register(SiteSettings)
@@ -84,6 +87,35 @@ class NailDesignAdmin(admin.ModelAdmin):
                 obj.image.name,
             )
         return 'No image uploaded'
+
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 0
+    readonly_fields = [
+        'design', 'design_slug', 'design_title', 'design_image_url',
+        'shape_name', 'size_name', 'custom_label', 'unit_price', 'qty',
+    ]
+    can_delete = False
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['id', 'status', 'customer_email', 'total', 'currency', 'created_at']
+    list_filter = ['status', 'created_at']
+    search_fields = ['customer_email', 'customer_name', 'stripe_session_id']
+    readonly_fields = [
+        'stripe_session_id', 'stripe_payment_intent_id', 'customer_email',
+        'customer_name', 'shipping_address', 'subtotal', 'shipping', 'total',
+        'currency', 'created_at', 'paid_at',
+    ]
+    fields = [
+        'status', 'customer_email', 'customer_name', 'shipping_address',
+        'subtotal', 'shipping', 'total', 'currency',
+        'stripe_session_id', 'stripe_payment_intent_id',
+        'created_at', 'paid_at',
+    ]
+    inlines = [OrderItemInline]
 
 
 @admin.register(Enquiry)

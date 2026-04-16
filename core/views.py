@@ -1,12 +1,19 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from decimal import Decimal
+
+import stripe
+from django.conf import settings
 from django.contrib import messages
+from django.db.models import Q
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from django.db.models import Q
-
 from .cart import Cart
-from .models import Category, NailDesign, NailSize
 from .forms import EnquiryForm
+from .models import Category, NailDesign, NailSize, Order, OrderItem
 
 
 def home(request):
@@ -128,7 +135,142 @@ def checkout(request):
     cart = Cart(request)
     if not cart.items:
         return redirect('view_cart')
-    return render(request, 'checkout.html', {'cart': cart})
+    shipping = Decimal(settings.SHIPPING_FEE_CENTS) / Decimal(100)
+    return render(request, 'checkout.html', {
+        'cart': cart,
+        'shipping': shipping,
+        'grand_total': cart.total + shipping,
+    })
+
+
+@require_POST
+def create_checkout_session(request):
+    cart = Cart(request)
+    if not cart.items:
+        return redirect('view_cart')
+
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+
+    order = Order.objects.create(
+        subtotal=cart.total,
+        shipping=Decimal(settings.SHIPPING_FEE_CENTS) / Decimal(100),
+        total=cart.total + Decimal(settings.SHIPPING_FEE_CENTS) / Decimal(100),
+        currency=settings.CURRENCY,
+    )
+
+    line_items = []
+    for item in cart.items:
+        design = NailDesign.objects.filter(slug=item['design_slug']).first()
+        OrderItem.objects.create(
+            order=order,
+            design=design,
+            design_slug=item['design_slug'],
+            design_title=item['design_title'],
+            design_image_url=item['design_image_url'],
+            shape_name=item['shape_name'] or '',
+            size_name=item['size_name'] or '',
+            custom_label=item.get('custom_label') or '',
+            unit_price=item['unit_price_decimal'],
+            qty=item['qty'],
+        )
+
+        parts = []
+        if item['shape_name']:
+            parts.append(f'Shape: {item["shape_name"]}')
+        if item.get('custom_label'):
+            parts.append(f'Size: {item["custom_label"]}')
+        elif item['size_name']:
+            parts.append(f'Size: {item["size_name"]}')
+        product_data = {'name': item['design_title']}
+        if parts:
+            product_data['description'] = ' | '.join(parts)
+
+        line_items.append({
+            'quantity': item['qty'],
+            'price_data': {
+                'currency': settings.CURRENCY,
+                'unit_amount': int(item['unit_price_decimal'] * 100),
+                'product_data': product_data,
+            },
+        })
+
+    session = stripe.checkout.Session.create(
+        mode='payment',
+        line_items=line_items,
+        shipping_address_collection={'allowed_countries': settings.ALLOWED_SHIPPING_COUNTRIES},
+        shipping_options=[{
+            'shipping_rate_data': {
+                'type': 'fixed_amount',
+                'fixed_amount': {
+                    'amount': settings.SHIPPING_FEE_CENTS,
+                    'currency': settings.CURRENCY,
+                },
+                'display_name': 'Standard shipping (Greece)',
+            },
+        }],
+        success_url=(
+            request.build_absolute_uri(reverse('checkout_success'))
+            + '?session_id={CHECKOUT_SESSION_ID}'
+        ),
+        cancel_url=request.build_absolute_uri(reverse('checkout_cancel')),
+        client_reference_id=str(order.pk),
+        metadata={'order_id': str(order.pk)},
+    )
+
+    order.stripe_session_id = session.id
+    order.save(update_fields=['stripe_session_id'])
+
+    return redirect(session.url, permanent=False)
+
+
+def checkout_success(request):
+    session_id = request.GET.get('session_id', '')
+    order = Order.objects.filter(stripe_session_id=session_id).first() if session_id else None
+    Cart(request).clear()
+    return render(request, 'checkout_success.html', {'order': order})
+
+
+def checkout_cancel(request):
+    return render(request, 'checkout_cancel.html')
+
+
+@csrf_exempt
+@require_POST
+def stripe_webhook(request):
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    payload = request.body
+    sig_header = request.headers.get('Stripe-Signature', '')
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
+        )
+    except (ValueError, stripe.error.SignatureVerificationError):
+        return HttpResponseBadRequest('Invalid webhook signature')
+
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        order = Order.objects.filter(stripe_session_id=session['id']).first()
+        if order and order.status != Order.STATUS_PAID:
+            order.status = Order.STATUS_PAID
+            order.paid_at = timezone.now()
+            order.stripe_payment_intent_id = session.get('payment_intent') or ''
+            customer = session.get('customer_details') or {}
+            order.customer_email = customer.get('email') or ''
+            order.customer_name = customer.get('name') or ''
+            shipping_details = session.get('shipping_details') or {}
+            addr = shipping_details.get('address') or {}
+            if addr:
+                lines = [
+                    addr.get('line1') or '',
+                    addr.get('line2') or '',
+                    f"{addr.get('postal_code') or ''} {addr.get('city') or ''}".strip(),
+                    addr.get('country') or '',
+                ]
+                order.shipping_address = '\n'.join(l for l in lines if l.strip())
+            order.save()
+
+    return HttpResponse(status=200)
 
 
 def contact(request):
