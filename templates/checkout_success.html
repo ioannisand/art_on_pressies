@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Thank you! — Art on Pressies{% endblock %}
+
+{% block content %}
+
+<section class="relative overflow-hidden py-16 md:py-20" style="background: linear-gradient(to right, #fce8fd, #f5b2f7, #e096f2);">
+    <div class="relative w-full px-4 sm:px-6 text-center">
+        <h1 class="font-heading font-900 text-3xl sm:text-5xl leading-tight mb-3
+                   bg-gradient-to-r from-[#2d0a4e] via-[#6b21a8] to-[#a855f7] bg-clip-text text-transparent">
+            Thank You!
+        </h1>
+        <p class="text-plum/70 text-lg">Your order is on its way to us.</p>
+    </div>
+</section>
+
+<section class="w-full px-4 sm:px-6 py-12">
+    <div class="max-w-xl mx-auto">
+
+        <div class="bg-white/60 backdrop-blur-sm rounded-3xl border border-white/60 p-8 text-center mb-6">
+            <div class="w-16 h-16 bg-gradient-to-br from-orchid to-grape rounded-full mx-auto mb-5 flex items-center justify-center">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+
+            {% if order %}
+            <h2 class="font-heading font-bold text-2xl text-plum mb-2">Order #{{ order.id }} received</h2>
+            <p class="text-plum/60 text-sm leading-relaxed mb-4">
+                We've received your payment details. You'll get a confirmation email
+                once the payment is finalised{% if order.customer_email %} at
+                <span class="font-semibold text-plum">{{ order.customer_email }}</span>{% endif %}.
+            </p>
+            <p class="text-plum/60 text-sm">
+                We'll be in touch shortly to confirm finishing details and shipping timeline.
+            </p>
+            {% else %}
+            <h2 class="font-heading font-bold text-2xl text-plum mb-2">Payment received</h2>
+            <p class="text-plum/60 text-sm">Thanks for your order — we'll be in touch shortly.</p>
+            {% endif %}
+        </div>
+
+        <div class="text-center">
+            <a href="{% url 'gallery' %}"
+               class="inline-block bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
+                      px-8 py-3 rounded-full hover:from-grape hover:to-plum transition-all">
+                Back to Gallery
+            </a>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

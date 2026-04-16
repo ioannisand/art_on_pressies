@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment cancelled — Art on Pressies{% endblock %}
+
+{% block content %}
+
+<section class="w-full px-4 sm:px-6 py-16">
+    <div class="max-w-xl mx-auto">
+
+        <div class="bg-white/60 backdrop-blur-sm rounded-3xl border border-white/60 p-8 text-center mb-6">
+            <div class="w-16 h-16 bg-white/70 border border-plum/20 rounded-full mx-auto mb-5 flex items-center justify-center">
+                <svg class="w-8 h-8 text-plum/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </div>
+
+            <h2 class="font-heading font-bold text-2xl text-plum mb-2">Payment cancelled</h2>
+            <p class="text-plum/60 text-sm leading-relaxed mb-4">
+                No worries — your cart is still saved. You can finish checkout whenever you're ready.
+            </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="{% url 'view_cart' %}"
+               class="inline-block bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
+                      px-8 py-3 rounded-full hover:from-grape hover:to-plum transition-all text-center">
+                Back to Cart
+            </a>
+            <a href="{% url 'gallery' %}"
+               class="inline-block border-2 border-plum text-plum font-heading font-bold
+                      px-8 py-3 rounded-full hover:bg-plum hover:text-white transition-colors text-center">
+                Continue Shopping
+            </a>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
