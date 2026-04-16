@@ -257,28 +257,38 @@ def stripe_webhook(request):
 
         if event['type'] == 'checkout.session.completed':
             session = event['data']['object']
-            order = Order.objects.filter(stripe_session_id=session['id']).first()
+
+            def _g(obj, key, default=''):
+                if obj is None:
+                    return default
+                try:
+                    val = obj[key]
+                except (KeyError, TypeError):
+                    return default
+                return val if val is not None else default
+
+            order = Order.objects.filter(stripe_session_id=_g(session, 'id')).first()
             if order and order.status != Order.STATUS_PAID:
                 order.status = Order.STATUS_PAID
                 order.paid_at = timezone.now()
-                order.stripe_payment_intent_id = session.get('payment_intent') or ''
-                customer = session.get('customer_details') or {}
-                order.customer_email = customer.get('email') or ''
-                order.customer_name = customer.get('name') or ''
-                shipping_details = session.get('shipping_details') or {}
-                addr = shipping_details.get('address') or {}
+                order.stripe_payment_intent_id = _g(session, 'payment_intent')
+                customer = _g(session, 'customer_details', None) or {}
+                order.customer_email = _g(customer, 'email')
+                order.customer_name = _g(customer, 'name')
+                shipping_details = _g(session, 'shipping_details', None) or {}
+                addr = _g(shipping_details, 'address', None) or {}
                 if addr:
                     lines = [
-                        addr.get('line1') or '',
-                        addr.get('line2') or '',
-                        f"{addr.get('postal_code') or ''} {addr.get('city') or ''}".strip(),
-                        addr.get('country') or '',
+                        _g(addr, 'line1'),
+                        _g(addr, 'line2'),
+                        f"{_g(addr, 'postal_code')} {_g(addr, 'city')}".strip(),
+                        _g(addr, 'country'),
                     ]
                     order.shipping_address = '\n'.join(l for l in lines if l.strip())
                 order.save()
                 print(f'[stripe-webhook] order {order.pk} marked paid', file=sys.stderr, flush=True)
             else:
-                print(f'[stripe-webhook] order not found or already paid for session {session.get("id")}',
+                print(f'[stripe-webhook] order not found or already paid for session {_g(session, "id")}',
                       file=sys.stderr, flush=True)
 
         return HttpResponse(status=200)
