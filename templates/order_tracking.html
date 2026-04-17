@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}Order #{{ order.id }} — Art on Pressies{% endblock %}
+
+{% block content %}
+
+<section class="relative overflow-hidden py-16 md:py-20" style="background: linear-gradient(to right, #fce8fd, #f5b2f7, #e096f2);">
+    <div class="relative w-full px-4 sm:px-6 text-center">
+        <h1 class="font-heading font-900 text-3xl sm:text-5xl leading-tight mb-3
+                   bg-gradient-to-r from-[#2d0a4e] via-[#6b21a8] to-[#a855f7] bg-clip-text text-transparent">
+            Order #{{ order.id }}
+        </h1>
+        <p class="text-plum/70 text-lg">Track your order status</p>
+    </div>
+</section>
+
+<section class="w-full px-4 sm:px-6 py-12">
+    <div class="max-w-2xl mx-auto space-y-6">
+
+        <!-- Status -->
+        <div class="bg-white/60 backdrop-blur-sm rounded-3xl border border-white/60 p-6">
+            <h2 class="font-heading font-bold text-plum text-lg mb-4">Status</h2>
+
+            <div class="flex items-center gap-4">
+                {% if order.status == 'paid' %}
+                <div class="w-12 h-12 bg-gradient-to-br from-orchid to-grape rounded-full flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="font-heading font-bold text-plum">Payment received</p>
+                    <p class="text-plum/60 text-sm">We're preparing your nails — we'll be in touch shortly.</p>
+                </div>
+                {% elif order.status == 'shipped' %}
+                <div class="w-12 h-12 bg-gradient-to-br from-orchid to-grape rounded-full flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="font-heading font-bold text-plum">On its way!</p>
+                    <p class="text-plum/60 text-sm">Your parcel has been handed to the courier.</p>
+                </div>
+                {% elif order.status == 'delivered' %}
+                <div class="w-12 h-12 bg-gradient-to-br from-orchid to-grape rounded-full flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="font-heading font-bold text-plum">Delivered</p>
+                    <p class="text-plum/60 text-sm">Your order has been delivered. Enjoy!</p>
+                </div>
+                {% else %}
+                <div class="w-12 h-12 bg-white/70 border border-plum/20 rounded-full flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6 text-plum/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="font-heading font-bold text-plum">{{ order.get_status_display }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if order.tracking_number or order.tracking_url %}
+            <div class="mt-5 pt-5 border-t border-white/60">
+                <p class="text-plum/70 text-sm font-heading font-semibold mb-1">Tracking</p>
+                {% if order.tracking_number %}
+                <p class="text-plum text-sm font-mono mb-2">{{ order.tracking_number }}</p>
+                {% endif %}
+                {% if order.tracking_url %}
+                <a href="{{ order.tracking_url }}" target="_blank" rel="noopener"
+                   class="inline-block bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
+                          px-6 py-2.5 rounded-full hover:from-grape hover:to-plum transition-all text-sm">
+                    Track with courier &rarr;
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Order items -->
+        <div class="bg-white/60 backdrop-blur-sm rounded-3xl border border-white/60 overflow-hidden">
+            <div class="px-6 py-4 border-b border-white/60">
+                <h2 class="font-heading font-bold text-plum text-lg">Your Items</h2>
+            </div>
+            <ul class="divide-y divide-white/60">
+                {% for item in order.items.all %}
+                <li class="flex gap-4 px-6 py-4 items-center">
+                    {% if item.design_image_url %}
+                    <img src="{{ item.design_image_url }}" alt="{{ item.design_title }}"
+                         class="w-14 h-14 object-cover rounded-xl border border-white/60 shrink-0">
+                    {% endif %}
+                    <div class="flex-1 min-w-0">
+                        <p class="font-heading font-bold text-plum leading-tight">{{ item.design_title }}</p>
+                        <p class="text-xs text-plum/60 mt-0.5">
+                            {{ item.shape_name|default:"—" }} &middot;
+                            {% if item.custom_label %}{{ item.custom_label }}{% else %}{{ item.size_name|default:"—" }}{% endif %}
+                            &middot; x{{ item.qty }}
+                        </p>
+                    </div>
+                    <span class="font-heading font-bold text-plum text-sm shrink-0">€{{ item.line_total|floatformat:2 }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="px-6 py-4 border-t border-white/60 flex justify-between items-center bg-white/40">
+                <span class="font-heading font-bold text-plum">Total paid</span>
+                <span class="font-heading font-900 text-xl text-plum">€{{ order.total|floatformat:2 }}</span>
+            </div>
+        </div>
+
+        <!-- Back to gallery -->
+        <div class="text-center">
+            <a href="{% url 'gallery' %}"
+               class="inline-block bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
+                      px-8 py-3 rounded-full hover:from-grape hover:to-plum transition-all">
+                Back to Gallery
+            </a>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
