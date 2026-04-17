@@ -145,6 +145,19 @@ def checkout(request):
 
 @require_POST
 def create_checkout_session(request):
+    import sys
+    import traceback
+    try:
+        return _create_checkout_session(request)
+    except Exception as exc:
+        print(f'[create-session] UNHANDLED: {type(exc).__name__}: {exc}',
+              file=sys.stderr, flush=True)
+        traceback.print_exc(file=sys.stderr)
+        sys.stderr.flush()
+        raise
+
+
+def _create_checkout_session(request):
     cart = Cart(request)
     if not cart.items:
         return redirect('view_cart')
