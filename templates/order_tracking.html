@@ -64,6 +64,13 @@
                 {% endif %}
             </div>
 
+            {% if order.delivery_method %}
+            <div class="mt-5 pt-5 border-t border-white/60">
+                <p class="text-plum/70 text-sm font-heading font-semibold mb-1">Delivery via</p>
+                <p class="text-plum font-heading font-bold">{{ order.get_delivery_method_display }}</p>
+            </div>
+            {% endif %}
+
             {% if order.tracking_number or order.tracking_url %}
             <div class="mt-5 pt-5 border-t border-white/60">
                 <p class="text-plum/70 text-sm font-heading font-semibold mb-1">Tracking</p>

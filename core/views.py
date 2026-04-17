@@ -166,11 +166,13 @@ def _create_checkout_session(request):
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
+    delivery_method = request.POST.get('delivery_method', '')
     order = Order.objects.create(
         subtotal=cart.total,
         shipping=Decimal(settings.SHIPPING_FEE_CENTS) / Decimal(100),
         total=cart.total + Decimal(settings.SHIPPING_FEE_CENTS) / Decimal(100),
         currency=settings.CURRENCY,
+        delivery_method=delivery_method,
     )
 
     line_items = []

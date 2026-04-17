@@ -45,6 +45,7 @@ class NailDesign(models.Model):
         Category, on_delete=models.CASCADE, related_name='designs'
     )
     price = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    original_price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     featured = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     available_shapes    = models.ManyToManyField('NailShape',   blank=True, related_name='designs')
@@ -52,6 +53,12 @@ class NailDesign(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+    @property
+    def discount_percent(self):
+        if self.original_price and self.original_price > self.price:
+            return int(round((1 - self.price / self.original_price) * 100))
+        return None
 
     def __str__(self):
         return self.title
@@ -111,6 +118,13 @@ class NailSizeSet(models.Model):
 
 
 class Order(models.Model):
+    DELIVERY_BOXNOW = 'boxnow'
+    DELIVERY_COURIER = 'courier'
+    DELIVERY_CHOICES = [
+        (DELIVERY_BOXNOW, 'BoxNow'),
+        (DELIVERY_COURIER, 'Courier'),
+    ]
+
     STATUS_PENDING = 'pending'
     STATUS_PAID = 'paid'
     STATUS_SHIPPED = 'shipped'
@@ -127,6 +141,7 @@ class Order(models.Model):
     ]
 
     lookup_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    delivery_method = models.CharField(max_length=20, choices=DELIVERY_CHOICES, blank=True)
     stripe_session_id = models.CharField(max_length=200, unique=True, blank=True, null=True)
     stripe_payment_intent_id = models.CharField(max_length=200, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)

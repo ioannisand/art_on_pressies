@@ -1,0 +1,21 @@
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('core', '0007_order_tracking'),
+    ]
+
+    operations = [
+        migrations.AddField(
+            model_name='naildesign',
+            name='original_price',
+            field=models.DecimalField(blank=True, decimal_places=2, max_digits=6, null=True),
+        ),
+        migrations.AddField(
+            model_name='order',
+            name='delivery_method',
+            field=models.CharField(blank=True, max_length=20, choices=[('boxnow', 'BoxNow'), ('courier', 'Courier')]),
+        ),
+    ]

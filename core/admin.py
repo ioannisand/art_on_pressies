@@ -55,13 +55,13 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(NailDesign)
 class NailDesignAdmin(admin.ModelAdmin):
-    list_display = ['title', 'category', 'price', 'featured', 'image_preview', 'created_at']
+    list_display = ['title', 'category', 'original_price', 'price', 'featured', 'image_preview', 'created_at']
     list_filter = ['category', 'featured']
     search_fields = ['title', 'description']
     prepopulated_fields = {'slug': ('title',)}
-    list_editable = ['price', 'featured']
+    list_editable = ['original_price', 'price', 'featured']
     fields = [
-        'title', 'slug', 'category', 'description', 'price',
+        'title', 'slug', 'category', 'description', 'original_price', 'price',
         'image', 'current_image', 'featured',
         'available_shapes', 'available_size_sets',
     ]
@@ -101,8 +101,8 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'status', 'customer_email', 'total', 'currency', 'created_at']
-    list_filter = ['status', 'created_at']
+    list_display = ['id', 'status', 'delivery_method', 'customer_email', 'total', 'currency', 'created_at']
+    list_filter = ['status', 'delivery_method', 'created_at']
     search_fields = ['customer_email', 'customer_name', 'stripe_session_id']
     readonly_fields = [
         'lookup_token', 'stripe_session_id', 'stripe_payment_intent_id', 'customer_email',
@@ -110,7 +110,7 @@ class OrderAdmin(admin.ModelAdmin):
         'currency', 'created_at', 'paid_at',
     ]
     fields = [
-        'status', 'tracking_number', 'tracking_url',
+        'status', 'delivery_method', 'tracking_number', 'tracking_url',
         'customer_email', 'customer_name', 'shipping_address',
         'subtotal', 'shipping', 'total', 'currency',
         'stripe_session_id', 'stripe_payment_intent_id',

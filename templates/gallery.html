@@ -35,7 +35,15 @@
             <div class="p-3 sm:p-4">
                 <span class="text-xs font-heading font-bold text-grape uppercase tracking-wider">{{ design.category.name }}</span>
                 <h3 class="font-heading font-bold text-sm sm:text-lg text-plum mt-1 group-hover:text-orchid transition-colors">{{ design.title }}</h3>
+                {% if design.discount_percent %}
+                <div class="flex items-center gap-1.5 flex-wrap mt-1">
+                    <span class="font-heading font-bold text-plum text-sm sm:text-base">€{{ design.price|floatformat:2 }}</span>
+                    <span class="font-heading text-plum/40 text-xs sm:text-sm line-through">€{{ design.original_price|floatformat:2 }}</span>
+                    <span class="bg-grape text-white font-heading font-bold text-xs px-1.5 py-0.5 rounded-full">-{{ design.discount_percent }}%</span>
+                </div>
+                {% else %}
                 <p class="font-heading font-bold text-plum/80 text-sm sm:text-base mt-1">€{{ design.price|floatformat:2 }}</p>
+                {% endif %}
             </div>
         </a>
         {% endfor %}

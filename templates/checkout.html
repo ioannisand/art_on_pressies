@@ -56,24 +56,55 @@
             </div>
         </div>
 
-        <!-- Pay with card -->
-        <div class="bg-white/50 backdrop-blur-sm rounded-2xl border border-white/60 p-6 mb-6 text-center">
-            <div class="w-12 h-12 bg-gradient-to-br from-orchid to-grape rounded-full mx-auto mb-4 flex items-center justify-center">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"/>
-                </svg>
-            </div>
-            <h3 class="font-heading font-bold text-plum text-xl mb-2">Secure Checkout</h3>
-            <p class="text-plum/60 text-sm leading-relaxed mb-6">
-                Pay securely with your card via Stripe. We ship to Greece.
-            </p>
-            <form method="post" action="{% url 'create_checkout_session' %}">
+        <!-- Delivery method + Pay with card -->
+        <div class="bg-white/50 backdrop-blur-sm rounded-2xl border border-white/60 p-6 mb-6">
+            <h3 class="font-heading font-bold text-plum text-xl mb-4 text-center">Delivery Method</h3>
+            <form method="post" action="{% url 'create_checkout_session' %}" id="checkout-form">
                 {% csrf_token %}
-                <button type="submit"
-                        class="inline-block bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
-                               px-8 py-4 rounded-full hover:from-grape hover:to-plum transition-all text-base">
-                    Pay with Card
-                </button>
+
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <label class="relative cursor-pointer">
+                        <input type="radio" name="delivery_method" value="boxnow" class="sr-only peer" required>
+                        <div class="peer-checked:border-grape peer-checked:bg-grape/10 border-2 border-plum/20 rounded-xl p-4 text-center transition-all">
+                            <div class="w-10 h-10 bg-gradient-to-br from-orchid to-grape rounded-full mx-auto mb-2 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/>
+                                </svg>
+                            </div>
+                            <p class="font-heading font-bold text-plum text-sm">BoxNow</p>
+                            <p class="text-plum/50 text-xs mt-0.5">Locker pickup</p>
+                        </div>
+                    </label>
+
+                    <label class="relative cursor-pointer">
+                        <input type="radio" name="delivery_method" value="courier" class="sr-only peer" required>
+                        <div class="peer-checked:border-grape peer-checked:bg-grape/10 border-2 border-plum/20 rounded-xl p-4 text-center transition-all">
+                            <div class="w-10 h-10 bg-gradient-to-br from-orchid to-grape rounded-full mx-auto mb-2 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                                </svg>
+                            </div>
+                            <p class="font-heading font-bold text-plum text-sm">Courier</p>
+                            <p class="text-plum/50 text-xs mt-0.5">Home delivery</p>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-orchid to-grape rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"/>
+                        </svg>
+                    </div>
+                    <p class="text-plum/60 text-sm leading-relaxed mb-6">
+                        Pay securely with your card via Stripe. We ship within Greece.
+                    </p>
+                    <button type="submit"
+                            class="inline-block bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
+                                   px-8 py-4 rounded-full hover:from-grape hover:to-plum transition-all text-base">
+                        Pay with Card
+                    </button>
+                </div>
             </form>
         </div>
 
