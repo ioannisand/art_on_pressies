@@ -27,13 +27,17 @@
             {% if order %}
             <h2 class="font-heading font-bold text-2xl text-plum mb-2">Order #{{ order.id }} received</h2>
             <p class="text-plum/60 text-sm leading-relaxed mb-4">
-                We've received your payment details. You'll get a confirmation email
-                once the payment is finalised{% if order.customer_email %} at
+                We've received your payment{% if order.customer_email %} and sent a confirmation to
                 <span class="font-semibold text-plum">{{ order.customer_email }}</span>{% endif %}.
             </p>
-            <p class="text-plum/60 text-sm">
+            <p class="text-plum/60 text-sm mb-5">
                 We'll be in touch shortly to confirm finishing details and shipping timeline.
             </p>
+            <a href="{% url 'order_tracking' order.lookup_token %}"
+               class="inline-block border-2 border-plum text-plum font-heading font-semibold
+                      px-6 py-2.5 rounded-full hover:bg-plum hover:text-white transition-colors text-sm">
+                View order status
+            </a>
             {% else %}
             <h2 class="font-heading font-bold text-2xl text-plum mb-2">Payment received</h2>
             <p class="text-plum/60 text-sm">Thanks for your order — we'll be in touch shortly.</p>

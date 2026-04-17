@@ -3,9 +3,11 @@ from decimal import Decimal
 import stripe
 from django.conf import settings
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -311,6 +313,7 @@ def stripe_webhook(request):
                     order.shipping_address = '\n'.join(l for l in lines if l.strip())
                 order.save()
                 print(f'[stripe-webhook] order {order.pk} marked paid', file=sys.stderr, flush=True)
+                _send_order_confirmation(request, order)
             else:
                 print(f'[stripe-webhook] order not found or already paid for session {_g(session, "id")}',
                       file=sys.stderr, flush=True)
@@ -322,6 +325,36 @@ def stripe_webhook(request):
         traceback.print_exc(file=sys.stderr)
         sys.stderr.flush()
         raise
+
+
+def order_tracking(request, token):
+    order = get_object_or_404(Order, lookup_token=token)
+    return render(request, 'order_tracking.html', {'order': order})
+
+
+def _send_order_confirmation(request, order):
+    if not order.customer_email:
+        return
+    tracking_url = request.build_absolute_uri(
+        reverse('order_tracking', args=[str(order.lookup_token)])
+    )
+    try:
+        send_mail(
+            subject=f'Order #{order.pk} confirmed — Art on Pressies',
+            message=(
+                f'Hi {order.customer_name or "there"},\n\n'
+                f'Thank you for your order! We\'ve received your payment.\n\n'
+                f'You can track your order status at any time here:\n{tracking_url}\n\n'
+                f'We\'ll be in touch shortly to confirm finishing details and shipping timeline.\n\n'
+                f'Art on Pressies'
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[order.customer_email],
+            fail_silently=True,
+        )
+        print(f'[email] confirmation sent to {order.customer_email}', flush=True)
+    except Exception as exc:
+        print(f'[email] failed to send: {exc}', flush=True)
 
 
 def contact(request):

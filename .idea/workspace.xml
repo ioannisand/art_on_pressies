@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc51e273-ed28-4160-aad5-302c80f8866e" name="Changes" comment="added price" />
+    <list default="true" id="bc51e273-ed28-4160-aad5-302c80f8866e" name="Changes" comment="added templates">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,13 +90,76 @@
       <option name="project" value="LOCAL" />
       <updated>1776371986190</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="added price migrations file">
+      <option name="closed" value="true" />
+      <created>1776372768829</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1776372768829</updated>
+    </task>
+    <task id="LOCAL-00005" summary="added stripe test env">
+      <option name="closed" value="true" />
+      <created>1776376118693</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1776376118693</updated>
+    </task>
+    <task id="LOCAL-00006" summary="added order migration file">
+      <option name="closed" value="true" />
+      <created>1776376852378</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1776376852378</updated>
+    </task>
+    <task id="LOCAL-00007" summary="debugging webhook">
+      <option name="closed" value="true" />
+      <created>1776377627905</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1776377627905</updated>
+    </task>
+    <task id="LOCAL-00008" summary="debugging webhook stripeobject fix">
+      <option name="closed" value="true" />
+      <created>1776378142923</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1776378142923</updated>
+    </task>
+    <task id="LOCAL-00009" summary="debugging sucess screen">
+      <option name="closed" value="true" />
+      <created>1776379273950</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1776379273950</updated>
+    </task>
+    <task id="LOCAL-00010" summary="added templates">
+      <option name="closed" value="true" />
+      <created>1776379567134</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1776379567134</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="redeploying" />
     <MESSAGE value="redeploying with no seed data this time" />
     <MESSAGE value="added price" />
-    <option name="LAST_COMMIT_MESSAGE" value="added price" />
+    <MESSAGE value="added price migrations file" />
+    <MESSAGE value="added stripe test env" />
+    <MESSAGE value="added order migration file" />
+    <MESSAGE value="debugging webhook" />
+    <MESSAGE value="debugging webhook stripeobject fix" />
+    <MESSAGE value="debugging sucess screen" />
+    <MESSAGE value="added templates" />
+    <option name="LAST_COMMIT_MESSAGE" value="added templates" />
   </component>
 </project>

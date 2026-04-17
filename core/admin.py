@@ -105,15 +105,16 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ['status', 'created_at']
     search_fields = ['customer_email', 'customer_name', 'stripe_session_id']
     readonly_fields = [
-        'stripe_session_id', 'stripe_payment_intent_id', 'customer_email',
+        'lookup_token', 'stripe_session_id', 'stripe_payment_intent_id', 'customer_email',
         'customer_name', 'shipping_address', 'subtotal', 'shipping', 'total',
         'currency', 'created_at', 'paid_at',
     ]
     fields = [
-        'status', 'customer_email', 'customer_name', 'shipping_address',
+        'status', 'tracking_number', 'tracking_url',
+        'customer_email', 'customer_name', 'shipping_address',
         'subtotal', 'shipping', 'total', 'currency',
         'stripe_session_id', 'stripe_payment_intent_id',
-        'created_at', 'paid_at',
+        'lookup_token', 'created_at', 'paid_at',
     ]
     inlines = [OrderItemInline]
 

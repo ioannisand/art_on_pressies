@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 
@@ -111,18 +113,25 @@ class NailSizeSet(models.Model):
 class Order(models.Model):
     STATUS_PENDING = 'pending'
     STATUS_PAID = 'paid'
+    STATUS_SHIPPED = 'shipped'
+    STATUS_DELIVERED = 'delivered'
     STATUS_CANCELLED = 'cancelled'
     STATUS_FAILED = 'failed'
     STATUS_CHOICES = [
         (STATUS_PENDING, 'Pending'),
         (STATUS_PAID, 'Paid'),
+        (STATUS_SHIPPED, 'Shipped'),
+        (STATUS_DELIVERED, 'Delivered'),
         (STATUS_CANCELLED, 'Cancelled'),
         (STATUS_FAILED, 'Failed'),
     ]
 
+    lookup_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     stripe_session_id = models.CharField(max_length=200, unique=True, blank=True, null=True)
     stripe_payment_intent_id = models.CharField(max_length=200, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    tracking_number = models.CharField(max_length=200, blank=True)
+    tracking_url = models.URLField(blank=True)
 
     customer_email = models.EmailField(blank=True)
     customer_name = models.CharField(max_length=200, blank=True)
