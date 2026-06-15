@@ -47,4 +47,30 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    // Cookie notice — show once on first visit, remembered in localStorage
+    const cookieNotice = document.getElementById('cookie-notice');
+    const cookieAccept = document.getElementById('cookie-accept');
+
+    if (cookieNotice) {
+        let acknowledged = false;
+        try {
+            acknowledged = localStorage.getItem('aop_cookie_ack') === '1';
+        } catch (e) {
+            acknowledged = false;  // localStorage blocked — show the notice anyway
+        }
+
+        if (!acknowledged) {
+            cookieNotice.classList.remove('hidden');
+        }
+
+        if (cookieAccept) {
+            cookieAccept.addEventListener('click', function () {
+                try {
+                    localStorage.setItem('aop_cookie_ack', '1');
+                } catch (e) { /* ignore — banner just won't be remembered */ }
+                cookieNotice.classList.add('hidden');
+            });
+        }
+    }
 });

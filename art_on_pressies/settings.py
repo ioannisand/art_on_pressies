@@ -132,6 +132,9 @@ LANGUAGES = [
 
 LOCALE_PATHS = [BASE_DIR / 'locale']
 
+# Persist the language choice for a year (default is a session-only cookie).
+LANGUAGE_COOKIE_AGE = 60 * 60 * 24 * 365
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True

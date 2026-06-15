@@ -172,6 +172,7 @@
                         <li><a href="{% url 'gallery' %}" class="text-petal/80 hover:text-white transition-colors">{% trans "Gallery" %}</a></li>
                         <li><a href="{% url 'about' %}"   class="text-petal/80 hover:text-white transition-colors">{% trans "About" %}</a></li>
                         <li><a href="{% url 'contact' %}" class="text-petal/80 hover:text-white transition-colors">{% trans "Contact" %}</a></li>
+                        <li><a href="{% url 'privacy' %}" class="text-petal/80 hover:text-white transition-colors">{% trans "Privacy & Cookies" %}</a></li>
                     </ul>
                 </div>
                 <div>
@@ -187,6 +188,22 @@
             </div>
         </div>
     </footer>
+
+    <!-- Cookie notice (essential cookies only — informational) -->
+    <div id="cookie-notice" class="hidden fixed bottom-0 inset-x-0 z-40 p-3 sm:p-5">
+        <div class="max-w-3xl mx-auto bg-white/80 backdrop-blur-md rounded-2xl border border-white/60 shadow-lg
+                    p-4 sm:p-5 flex flex-col sm:flex-row items-center gap-3 sm:gap-5">
+            <p class="text-plum/80 text-sm leading-relaxed flex-1 text-center sm:text-left">
+                {% trans "We use only essential cookies to keep your cart and language preference working. No tracking, no ads." %}
+                <a href="{% url 'privacy' %}" class="text-grape font-semibold underline underline-offset-2 hover:text-plum transition-colors whitespace-nowrap">{% trans "Learn more" %}</a>
+            </p>
+            <button id="cookie-accept"
+                    class="shrink-0 bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
+                           px-6 py-2.5 rounded-full hover:from-grape hover:to-plum transition-all text-sm">
+                {% trans "Got it" %}
+            </button>
+        </div>
+    </div>
 
     <script src="{% static 'js/main.js' %}"></script>
 </body>

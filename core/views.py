@@ -78,6 +78,10 @@ def about(request):
     return render(request, 'about.html')
 
 
+def privacy(request):
+    return render(request, 'privacy.html')
+
+
 @require_POST
 def add_to_cart(request, slug):
     design = get_object_or_404(NailDesign, slug=slug)

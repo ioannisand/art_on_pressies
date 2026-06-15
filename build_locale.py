@@ -227,6 +227,46 @@ SINGULAR = {
     "Shape: %(value)s": "Σχήμα: %(value)s",
     "Size: %(value)s": "Μέγεθος: %(value)s",
     "Standard shipping (Greece)": "Τυπική αποστολή (Ελλάδα)",
+
+    # ── Cookie notice ──
+    "We use only essential cookies to keep your cart and language preference working. No tracking, no ads.":
+        "Χρησιμοποιούμε μόνο απαραίτητα cookies για να λειτουργούν το καλάθι και η προτίμηση γλώσσας σου. Χωρίς παρακολούθηση, χωρίς διαφημίσεις.",
+    "Got it": "Εντάξει",
+    "Learn more": "Μάθε περισσότερα",
+
+    # ── Privacy & Cookies page ──
+    "Privacy & Cookies": "Απόρρητο & Cookies",
+    "How we handle your information": "Πώς διαχειριζόμαστε τις πληροφορίες σου",
+    "Art on Pressies is a small, owner-run business. We collect only what we need to process your orders and answer your enquiries — nothing more. We don't sell your data, and we don't use advertising or tracking cookies.":
+        "Το Art on Pressies είναι μια μικρή επιχείρηση που τη διαχειρίζεται η ίδια η ιδιοκτήτρια. Συλλέγουμε μόνο όσα χρειαζόμαστε για να επεξεργαστούμε τις παραγγελίες σου και να απαντήσουμε στα μηνύματά σου — τίποτα παραπάνω. Δεν πουλάμε τα δεδομένα σου και δεν χρησιμοποιούμε cookies διαφήμισης ή παρακολούθησης.",
+    "Cookies we use": "Τα cookies που χρησιμοποιούμε",
+    "We use a small number of essential cookies that keep the site working. These don't track you across other websites.":
+        "Χρησιμοποιούμε έναν μικρό αριθμό απαραίτητων cookies που κρατούν τον ιστότοπο λειτουργικό. Αυτά δεν σε παρακολουθούν σε άλλους ιστότοπους.",
+    "Cookie": "Cookie",
+    "Purpose": "Σκοπός",
+    "Duration": "Διάρκεια",
+    "Keeps your shopping cart and your session": "Κρατά το καλάθι αγορών και τη συνεδρία σου",
+    "Protects forms from cross-site request forgery":
+        "Προστατεύει τις φόρμες από επιθέσεις cross-site request forgery",
+    "Remembers your language choice (English or Greek)":
+        "Θυμάται την επιλογή γλώσσας σου (Αγγλικά ή Ελληνικά)",
+    "2 weeks": "2 εβδομάδες",
+    "1 year": "1 έτος",
+    "We also keep a small flag in your browser's local storage to remember that you've dismissed the cookie notice. It never leaves your device.":
+        "Αποθηκεύουμε επίσης μια μικρή ένδειξη στον τοπικό αποθηκευτικό χώρο (local storage) του browser σου, ώστε να θυμόμαστε ότι έκλεισες αυτή την ειδοποίηση. Δεν φεύγει ποτέ από τη συσκευή σου.",
+    "Information we collect": "Πληροφορίες που συλλέγουμε",
+    "When you place an order, our payment provider collects your name, email address, and shipping address so we can deliver your nails and send you order updates.":
+        "Όταν κάνεις μια παραγγελία, ο πάροχος πληρωμών μας συλλέγει το όνομα, το email και τη διεύθυνση αποστολής σου, ώστε να μπορούμε να σου παραδώσουμε τα νύχια σου και να σου στέλνουμε ενημερώσεις για την παραγγελία.",
+    "When you send an enquiry, we keep the name, email, phone number (if given), and message you submit, so we can reply.":
+        "Όταν μας στέλνεις ένα μήνυμα, κρατάμε το όνομα, το email, τον αριθμό τηλεφώνου (αν τον δώσεις) και το μήνυμα που υποβάλλεις, ώστε να μπορούμε να σου απαντήσουμε.",
+    "Payments": "Πληρωμές",
+    "Card payments are processed securely by Stripe. We never see or store your full card details.":
+        "Οι πληρωμές με κάρτα διεκπεραιώνονται με ασφάλεια από τη Stripe. Δεν βλέπουμε ούτε αποθηκεύουμε ποτέ τα πλήρη στοιχεία της κάρτας σου.",
+    "See how Stripe handles payment data": "Δες πώς η Stripe διαχειρίζεται τα δεδομένα πληρωμών",
+    "Questions?": "Ερωτήσεις;",
+    "If you'd like to know what data we hold about you, or want it removed, just get in touch and we'll help.":
+        "Αν θέλεις να μάθεις ποια δεδομένα διατηρούμε για σένα, ή να ζητήσεις τη διαγραφή τους, απλώς επικοινώνησε μαζί μας και θα σε βοηθήσουμε.",
+    "Last updated": "Τελευταία ενημέρωση",
 }
 
 # ── Plural messages: (singular_src, plural_src) -> [greek_singular, greek_plural] ──
