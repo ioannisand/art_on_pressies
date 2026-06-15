@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from .models import Enquiry
 
@@ -12,9 +13,16 @@ class EnquiryForm(forms.ModelForm):
     class Meta:
         model = Enquiry
         fields = ['name', 'email', 'phone', 'design', 'message']
+        labels = {
+            'name': _('Name'),
+            'email': _('Email'),
+            'phone': _('Phone'),
+            'design': _('Design'),
+            'message': _('Message'),
+        }
         widgets = {
             'name': forms.TextInput(attrs={
-                'placeholder': 'Your name',
+                'placeholder': _('Your name'),
                 'class': INPUT_CLASS,
             }),
             'email': forms.EmailInput(attrs={
@@ -22,14 +30,14 @@ class EnquiryForm(forms.ModelForm):
                 'class': INPUT_CLASS,
             }),
             'phone': forms.TextInput(attrs={
-                'placeholder': 'Phone number (optional)',
+                'placeholder': _('Phone number (optional)'),
                 'class': INPUT_CLASS,
             }),
             'design': forms.Select(attrs={
                 'class': INPUT_CLASS,
             }),
             'message': forms.Textarea(attrs={
-                'placeholder': 'Tell us about your dream nails...',
+                'placeholder': _('Tell us about your dream nails...'),
                 'rows': 5,
                 'class': INPUT_CLASS,
             }),

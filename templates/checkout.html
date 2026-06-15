@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Checkout — Art on Pressies{% endblock %}
+{% block title %}{% trans "Checkout" %} — Art on Pressies{% endblock %}
 
 {% block content %}
 
@@ -9,9 +10,9 @@
     <div class="relative w-full px-4 sm:px-6 text-center">
         <h1 class="font-heading font-900 text-3xl sm:text-5xl leading-tight mb-3
                    bg-gradient-to-r from-[#2d0a4e] via-[#6b21a8] to-[#a855f7] bg-clip-text text-transparent">
-            Order Summary
+            {% trans "Order Summary" %}
         </h1>
-        <p class="text-plum/70 text-lg">Review your selections before getting in touch</p>
+        <p class="text-plum/70 text-lg">{% trans "Review your selections before getting in touch" %}</p>
     </div>
 </section>
 
@@ -21,7 +22,7 @@
         <!-- Item list -->
         <div class="bg-white/60 backdrop-blur-sm rounded-3xl border border-white/60 overflow-hidden mb-6">
             <div class="px-6 py-4 border-b border-white/60">
-                <h2 class="font-heading font-bold text-plum text-lg">Your Items</h2>
+                <h2 class="font-heading font-bold text-plum text-lg">{% trans "Your Items" %}</h2>
             </div>
 
             <ul class="divide-y divide-white/60">
@@ -33,7 +34,7 @@
                         <p class="font-heading font-bold text-plum leading-tight">{{ item.design_title }}</p>
                         <p class="text-xs text-plum/60 mt-0.5">
                             {{ item.shape_name|default:"—" }} &middot;
-                            {% if item.custom_label %}Custom{% else %}{{ item.size_name|default:"—" }}{% endif %}
+                            {% if item.custom_label %}{% trans "Custom" %}{% else %}{{ item.size_name|default:"—" }}{% endif %}
                             &middot; x{{ item.qty }}
                         </p>
                     </div>
@@ -43,22 +44,22 @@
             </ul>
 
             <div class="px-6 py-4 border-t border-white/60 flex justify-between items-center">
-                <span class="font-heading font-semibold text-plum/70 text-sm">Subtotal ({{ cart.count }} item{{ cart.count|pluralize }})</span>
+                <span class="font-heading font-semibold text-plum/70 text-sm">{% blocktrans count counter=cart.count %}Subtotal ({{ counter }} item){% plural %}Subtotal ({{ counter }} items){% endblocktrans %}</span>
                 <span class="font-heading font-bold text-plum">€{{ cart.total|floatformat:2 }}</span>
             </div>
             <div class="px-6 py-3 border-t border-white/60 flex justify-between items-center">
-                <span class="font-heading font-semibold text-plum/70 text-sm">Shipping (Greece)</span>
+                <span class="font-heading font-semibold text-plum/70 text-sm">{% trans "Shipping (Greece)" %}</span>
                 <span class="font-heading font-bold text-plum">€{{ shipping|floatformat:2 }}</span>
             </div>
             <div class="px-6 py-4 border-t border-white/60 flex justify-between items-center bg-white/40">
-                <span class="font-heading font-bold text-plum">Total</span>
+                <span class="font-heading font-bold text-plum">{% trans "Total" %}</span>
                 <span class="font-heading font-900 text-2xl text-plum">€{{ grand_total|floatformat:2 }}</span>
             </div>
         </div>
 
         <!-- Delivery method + Pay with card -->
         <div class="bg-white/50 backdrop-blur-sm rounded-2xl border border-white/60 p-6 mb-6">
-            <h3 class="font-heading font-bold text-plum text-xl mb-4 text-center">Delivery Method</h3>
+            <h3 class="font-heading font-bold text-plum text-xl mb-4 text-center">{% trans "Delivery Method" %}</h3>
             <form method="post" action="{% url 'create_checkout_session' %}" id="checkout-form">
                 {% csrf_token %}
 
@@ -72,7 +73,7 @@
                                 </svg>
                             </div>
                             <p class="font-heading font-bold text-plum text-sm">BoxNow</p>
-                            <p class="text-plum/50 text-xs mt-0.5">Locker pickup</p>
+                            <p class="text-plum/50 text-xs mt-0.5">{% trans "Locker pickup" %}</p>
                         </div>
                     </label>
 
@@ -84,8 +85,8 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
                                 </svg>
                             </div>
-                            <p class="font-heading font-bold text-plum text-sm">Courier</p>
-                            <p class="text-plum/50 text-xs mt-0.5">Home delivery</p>
+                            <p class="font-heading font-bold text-plum text-sm">{% trans "Courier" %}</p>
+                            <p class="text-plum/50 text-xs mt-0.5">{% trans "Home delivery" %}</p>
                         </div>
                     </label>
                 </div>
@@ -97,12 +98,12 @@
                         </svg>
                     </div>
                     <p class="text-plum/60 text-sm leading-relaxed mb-6">
-                        Pay securely with your card via Stripe. We ship within Greece.
+                        {% trans "Pay securely with your card via Stripe. We ship within Greece." %}
                     </p>
                     <button type="submit"
                             class="inline-block bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
                                    px-8 py-4 rounded-full hover:from-grape hover:to-plum transition-all text-base">
-                        Pay with Card
+                        {% trans "Pay with Card" %}
                     </button>
                 </div>
             </form>
@@ -110,10 +111,10 @@
 
         <!-- Enquiry alternative -->
         <div class="text-center mb-8">
-            <p class="text-plum/60 text-sm mb-2">Have a question first?</p>
+            <p class="text-plum/60 text-sm mb-2">{% trans "Have a question first?" %}</p>
             <a href="{% url 'contact' %}"
                class="inline-block text-grape font-heading font-semibold hover:text-plum underline underline-offset-2 transition-colors">
-                Send an enquiry instead
+                {% trans "Send an enquiry instead" %}
             </a>
         </div>
 
@@ -121,7 +122,7 @@
         <div class="text-center">
             <a href="{% url 'view_cart' %}"
                class="text-plum/60 hover:text-plum font-heading font-semibold text-sm transition-colors">
-                &larr; Back to Cart
+                &larr; {% trans "Back to Cart" %}
             </a>
         </div>
 

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Your Cart — Art on Pressies{% endblock %}
+{% block title %}{% trans "Your Cart" %} — Art on Pressies{% endblock %}
 
 {% block content %}
 
@@ -9,9 +10,9 @@
     <div class="relative w-full px-4 sm:px-6 text-center">
         <h1 class="font-heading font-900 text-3xl sm:text-5xl leading-tight mb-3
                    bg-gradient-to-r from-[#2d0a4e] via-[#6b21a8] to-[#a855f7] bg-clip-text text-transparent">
-            Your Cart
+            {% trans "Your Cart" %}
         </h1>
-        <p class="text-plum/70 text-lg">{{ cart.count }} item{% if cart.count != 1 %}s{% endif %}</p>
+        <p class="text-plum/70 text-lg">{% blocktrans count counter=cart.count %}{{ counter }} item{% plural %}{{ counter }} items{% endblocktrans %}</p>
     </div>
 </section>
 
@@ -37,11 +38,11 @@
                 </a>
 
                 <p class="text-sm text-plum/60 mb-1">
-                    Shape: <span class="font-semibold text-plum/80">{{ item.shape_name|default:"—" }}</span>
+                    {% trans "Shape:" %} <span class="font-semibold text-plum/80">{{ item.shape_name|default:"—" }}</span>
                 </p>
                 <p class="text-sm text-plum/60 mb-1">
-                    Size: <span class="font-semibold text-plum/80">
-                        {% if item.custom_label %}Custom{% else %}{{ item.size_name|default:"—" }}{% endif %}
+                    {% trans "Size:" %} <span class="font-semibold text-plum/80">
+                        {% if item.custom_label %}{% trans "Custom" %}{% else %}{{ item.size_name|default:"—" }}{% endif %}
                     </span>
                     {% if item.custom_label %}
                     <span class="text-xs text-plum/40 ml-1">{{ item.custom_label }}</span>
@@ -49,7 +50,7 @@
                 </p>
                 <p class="font-heading font-bold text-plum text-base mb-3">
                     €{{ item.line_total|floatformat:2 }}
-                    {% if item.qty > 1 %}<span class="text-xs font-normal text-plum/50 ml-1">(€{{ item.unit_price_decimal|floatformat:2 }} each)</span>{% endif %}
+                    {% if item.qty > 1 %}<span class="text-xs font-normal text-plum/50 ml-1">{% blocktrans with price=item.unit_price_decimal|floatformat:2 %}(€{{ price }} each){% endblocktrans %}</span>{% endif %}
                 </p>
 
                 <!-- Qty + Remove row -->
@@ -77,7 +78,7 @@
                         <input type="hidden" name="key" value="{{ item.key }}">
                         <button type="submit"
                                 class="text-xs font-heading font-semibold text-plum/50 hover:text-red-500 transition-colors underline underline-offset-2">
-                            Remove
+                            {% trans "Remove" %}
                         </button>
                     </form>
                 </div>
@@ -87,7 +88,7 @@
 
         <!-- Subtotal -->
         <div class="bg-white/60 backdrop-blur-sm rounded-2xl border border-white/60 p-5 flex justify-between items-center">
-            <span class="font-heading font-semibold text-plum/70">Subtotal</span>
+            <span class="font-heading font-semibold text-plum/70">{% trans "Subtotal" %}</span>
             <span class="font-heading font-900 text-2xl text-plum">€{{ cart.total|floatformat:2 }}</span>
         </div>
 
@@ -95,12 +96,12 @@
         <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4">
             <a href="{% url 'gallery' %}"
                class="text-plum font-heading font-semibold hover:text-grape transition-colors text-sm">
-                &larr; Continue Shopping
+                &larr; {% trans "Continue Shopping" %}
             </a>
             <a href="{% url 'checkout' %}"
                class="bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
                       px-8 py-3 rounded-full hover:from-grape hover:to-plum transition-all text-base">
-                Proceed to Checkout
+                {% trans "Proceed to Checkout" %}
             </a>
         </div>
     </div>
@@ -114,12 +115,12 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
             </svg>
         </div>
-        <h2 class="font-heading font-bold text-2xl text-plum mb-3">Your cart is empty</h2>
-        <p class="text-plum/60 mb-8">Browse the gallery and add something you love.</p>
+        <h2 class="font-heading font-bold text-2xl text-plum mb-3">{% trans "Your cart is empty" %}</h2>
+        <p class="text-plum/60 mb-8">{% trans "Browse the gallery and add something you love." %}</p>
         <a href="{% url 'gallery' %}"
            class="inline-block bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
                   px-8 py-3 rounded-full hover:from-grape hover:to-plum transition-all">
-            Browse Gallery
+            {% trans "Browse Gallery" %}
         </a>
     </div>
 

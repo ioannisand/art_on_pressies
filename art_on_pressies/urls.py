@@ -17,6 +17,7 @@ def serve_media(request, path):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('i18n/', include('django.conf.urls.i18n')),  # set_language view
     path('media/<path:path>', serve_media),
     path('', include('core.urls')),
 ]

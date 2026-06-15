@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from modeltranslation.admin import TranslationAdmin
 
 from .models import (
     SiteSettings, Category, NailDesign, Enquiry,
@@ -54,7 +55,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(NailDesign)
-class NailDesignAdmin(admin.ModelAdmin):
+class NailDesignAdmin(TranslationAdmin):
     list_display = ['title', 'category', 'original_price', 'price', 'featured', 'image_preview', 'created_at']
     list_filter = ['category', 'featured']
     search_fields = ['title', 'description']

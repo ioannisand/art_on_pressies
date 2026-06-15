@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc51e273-ed28-4160-aad5-302c80f8866e" name="Changes" comment="added templates">
+    <list default="true" id="bc51e273-ed28-4160-aad5-302c80f8866e" name="Changes" comment="added linebreaks to description">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/art_on_pressies/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/art_on_pressies/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/art_on_pressies/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/art_on_pressies/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/about.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/cart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/checkout.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/checkout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/checkout_cancel.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/checkout_cancel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/checkout_success.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/checkout_success.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/contact.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contact.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/design_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/design_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/gallery.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/gallery.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order_tracking.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order_tracking.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/search.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +164,55 @@
       <option name="project" value="LOCAL" />
       <updated>1776379567134</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="added debug logs for stripe live">
+      <option name="closed" value="true" />
+      <created>1776409575704</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1776409575704</updated>
+    </task>
+    <task id="LOCAL-00012" summary="added smtp for emails, added order tracking">
+      <option name="closed" value="true" />
+      <created>1776417892694</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1776417892695</updated>
+    </task>
+    <task id="LOCAL-00013" summary="added order tracking template/ order tracking migrations">
+      <option name="closed" value="true" />
+      <created>1776418237332</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1776418237332</updated>
+    </task>
+    <task id="LOCAL-00014" summary="migration order bugfix">
+      <option name="closed" value="true" />
+      <created>1776418767478</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1776418767478</updated>
+    </task>
+    <task id="LOCAL-00015" summary="added discounts , orders choose shipping method">
+      <option name="closed" value="true" />
+      <created>1776420863315</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1776420863315</updated>
+    </task>
+    <task id="LOCAL-00016" summary="added linebreaks to description">
+      <option name="closed" value="true" />
+      <created>1776422499782</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1776422499782</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -160,6 +226,12 @@
     <MESSAGE value="debugging webhook stripeobject fix" />
     <MESSAGE value="debugging sucess screen" />
     <MESSAGE value="added templates" />
-    <option name="LAST_COMMIT_MESSAGE" value="added templates" />
+    <MESSAGE value="added debug logs for stripe live" />
+    <MESSAGE value="added smtp for emails, added order tracking" />
+    <MESSAGE value="added order tracking template/ order tracking migrations" />
+    <MESSAGE value="migration order bugfix" />
+    <MESSAGE value="added discounts , orders choose shipping method" />
+    <MESSAGE value="added linebreaks to description" />
+    <option name="LAST_COMMIT_MESSAGE" value="added linebreaks to description" />
   </component>
 </project>

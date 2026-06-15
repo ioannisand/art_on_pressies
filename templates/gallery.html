@@ -1,19 +1,20 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Gallery — Art on Pressies{% endblock %}
+{% block title %}{% trans "Gallery" %} — Art on Pressies{% endblock %}
 
 {% block content %}
 <section class="bg-white w-full px-4 sm:px-6 py-16">
     <div class="text-center mb-12">
-        <h1 class="font-heading font-900 text-3xl sm:text-5xl text-plum mb-4">Our Gallery</h1>
-        <p class="text-plum/60 text-lg">Browse our collection of handcrafted press-on nail designs</p>
+        <h1 class="font-heading font-900 text-3xl sm:text-5xl text-plum mb-4">{% trans "Our Gallery" %}</h1>
+        <p class="text-plum/60 text-lg">{% trans "Browse our collection of handcrafted press-on nail designs" %}</p>
     </div>
 
     {% if categories %}
     <div class="flex flex-wrap justify-center gap-3 mb-12">
         <a href="{% url 'gallery' %}"
            class="px-5 py-2 rounded-full font-heading font-semibold text-sm transition-all {% if not active_category %}bg-plum text-white{% else %}bg-white/50 backdrop-blur-sm text-plum border border-white/60 hover:border-grape{% endif %}">
-            All
+            {% trans "All" %}
         </a>
         {% for cat in categories %}
         <a href="{% url 'gallery' %}?category={{ cat.slug }}"
@@ -50,9 +51,15 @@
     </div>
     {% else %}
     <div class="text-center py-20">
-        <p class="text-plum/50 text-xl">No designs found{% if active_category %} in "{{ active_category.name }}"{% endif %}.</p>
+        <p class="text-plum/50 text-xl">
+            {% if active_category %}
+                {% blocktrans with name=active_category.name %}No designs found in "{{ name }}".{% endblocktrans %}
+            {% else %}
+                {% trans "No designs found." %}
+            {% endif %}
+        </p>
         {% if active_category %}
-        <a href="{% url 'gallery' %}" class="inline-block mt-4 text-grape font-heading font-bold hover:text-plum transition-colors">View all designs</a>
+        <a href="{% url 'gallery' %}" class="inline-block mt-4 text-grape font-heading font-bold hover:text-plum transition-colors">{% trans "View all designs" %}</a>
         {% endif %}
     </div>
     {% endif %}

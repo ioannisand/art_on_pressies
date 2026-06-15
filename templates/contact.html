@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Contact — Art on Pressies{% endblock %}
+{% block title %}{% trans "Contact" %} — Art on Pressies{% endblock %}
 
 {% block content %}
 <section class="relative overflow-hidden py-20 text-center">
@@ -10,8 +11,8 @@
         <div class="absolute bottom-0 right-1/4 w-72 h-72 bg-orchid rounded-full blur-3xl"></div>
     </div>
     <div class="relative w-full px-4 sm:px-6">
-        <h1 class="font-heading font-900 text-3xl sm:text-5xl text-white mb-6">Get in <span class="text-petal">Touch</span></h1>
-        <p class="text-petal text-xl max-w-2xl mx-auto">Have a design in mind? Want a custom set? Drop us a message and we'll get back to you.</p>
+        <h1 class="font-heading font-900 text-3xl sm:text-5xl text-white mb-6">{% blocktrans %}Get in <span class="text-petal">Touch</span>{% endblocktrans %}</h1>
+        <p class="text-petal text-xl max-w-2xl mx-auto">{% trans "Have a design in mind? Want a custom set? Drop us a message and we'll get back to you." %}</p>
     </div>
 </section>
 
@@ -38,7 +39,7 @@
 
         <div class="pt-4">
             <button type="submit" class="w-full bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold px-8 py-4 text-lg rounded-full hover:from-grape hover:to-plum transition-all">
-                Send Enquiry
+                {% trans "Send Enquiry" %}
             </button>
         </div>
     </form>

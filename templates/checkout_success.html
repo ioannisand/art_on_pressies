@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Thank you! — Art on Pressies{% endblock %}
+{% block title %}{% trans "Thank you!" %} — Art on Pressies{% endblock %}
 
 {% block content %}
 
@@ -8,9 +9,9 @@
     <div class="relative w-full px-4 sm:px-6 text-center">
         <h1 class="font-heading font-900 text-3xl sm:text-5xl leading-tight mb-3
                    bg-gradient-to-r from-[#2d0a4e] via-[#6b21a8] to-[#a855f7] bg-clip-text text-transparent">
-            Thank You!
+            {% trans "Thank You!" %}
         </h1>
-        <p class="text-plum/70 text-lg">Your order is on its way to us.</p>
+        <p class="text-plum/70 text-lg">{% trans "Your order is on its way to us." %}</p>
     </div>
 </section>
 
@@ -25,22 +26,21 @@
             </div>
 
             {% if order %}
-            <h2 class="font-heading font-bold text-2xl text-plum mb-2">Order #{{ order.id }} received</h2>
+            <h2 class="font-heading font-bold text-2xl text-plum mb-2">{% blocktrans with id=order.id %}Order #{{ id }} received{% endblocktrans %}</h2>
             <p class="text-plum/60 text-sm leading-relaxed mb-4">
-                We've received your payment{% if order.customer_email %} and sent a confirmation to
-                <span class="font-semibold text-plum">{{ order.customer_email }}</span>{% endif %}.
+                {% if order.customer_email %}{% blocktrans with email=order.customer_email %}We've received your payment and sent a confirmation to <span class="font-semibold text-plum">{{ email }}</span>.{% endblocktrans %}{% else %}{% trans "We've received your payment." %}{% endif %}
             </p>
             <p class="text-plum/60 text-sm mb-5">
-                We'll be in touch shortly to confirm finishing details and shipping timeline.
+                {% trans "We'll be in touch shortly to confirm finishing details and shipping timeline." %}
             </p>
             <a href="{% url 'order_tracking' order.lookup_token %}"
                class="inline-block border-2 border-plum text-plum font-heading font-semibold
                       px-6 py-2.5 rounded-full hover:bg-plum hover:text-white transition-colors text-sm">
-                View order status
+                {% trans "View order status" %}
             </a>
             {% else %}
-            <h2 class="font-heading font-bold text-2xl text-plum mb-2">Payment received</h2>
-            <p class="text-plum/60 text-sm">Thanks for your order — we'll be in touch shortly.</p>
+            <h2 class="font-heading font-bold text-2xl text-plum mb-2">{% trans "Payment received" %}</h2>
+            <p class="text-plum/60 text-sm">{% trans "Thanks for your order — we'll be in touch shortly." %}</p>
             {% endif %}
         </div>
 
@@ -48,7 +48,7 @@
             <a href="{% url 'gallery' %}"
                class="inline-block bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
                       px-8 py-3 rounded-full hover:from-grape hover:to-plum transition-all">
-                Back to Gallery
+                {% trans "Back to Gallery" %}
             </a>
         </div>
 

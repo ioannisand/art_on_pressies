@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block title %}{{ design.title }} — Art on Pressies{% endblock %}
 
 {% block content %}
 <section class="w-full px-4 sm:px-6 py-16" style="background: linear-gradient(to right, #fce8fd, #f5b2f7, #e096f2);">
     <div class="mb-8">
-        <a href="{% url 'gallery' %}" class="text-plum font-heading font-semibold hover:text-grape transition-colors">&larr; Back to Gallery</a>
+        <a href="{% url 'gallery' %}" class="text-plum font-heading font-semibold hover:text-grape transition-colors">&larr; {% trans "Back to Gallery" %}</a>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -29,7 +30,7 @@
             <!-- ── Shape selector ── -->
             {% if design.available_shapes.all %}
             <div class="mb-7">
-                <p class="font-heading font-bold text-plum mb-3">Shape</p>
+                <p class="font-heading font-bold text-plum mb-3">{% trans "Shape" %}</p>
                 <div class="flex flex-wrap gap-2">
                     {% for shape in design.available_shapes.all %}
                     <button type="button" data-variant="shape" data-value="{{ shape.slug }}"
@@ -49,7 +50,7 @@
 
                 <!-- Label row with help link -->
                 <div class="flex items-center gap-3 mb-3">
-                    <p class="font-heading font-bold text-plum">Size</p>
+                    <p class="font-heading font-bold text-plum">{% trans "Size" %}</p>
                     <button type="button" id="sizing-help-btn"
                             class="flex items-center gap-1 text-xs font-heading font-semibold text-grape
                                    hover:text-plum underline underline-offset-2 transition-colors">
@@ -59,7 +60,7 @@
                                      0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093
                                      M12 17h.01"/>
                         </svg>
-                        Need help sizing?
+                        {% trans "Need help sizing?" %}
                     </button>
                 </div>
 
@@ -75,7 +76,7 @@
                                      opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-lg">
                             <span class="block font-bold mb-1">{{ ss.name }}</span>
                             <span class="block">{{ ss.thumb.width_mm }} · {{ ss.index.width_mm }} · {{ ss.middle.width_mm }} · {{ ss.ring.width_mm }} · {{ ss.pinky.width_mm }} mm</span>
-                            <span class="block text-white/60 mt-0.5">thumb · index · middle · ring · pinky</span>
+                            <span class="block text-white/60 mt-0.5">{% trans "thumb · index · middle · ring · pinky" %}</span>
                         </span>
                     </button>
                     {% endfor %}
@@ -88,10 +89,10 @@
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                         </svg>
-                        Custom
+                        {% trans "Custom" %}
                     </button>
                 </div>
-                <p class="text-xs text-plum/50 mt-2">Hover a size to see per-finger measurements.</p>
+                <p class="text-xs text-plum/50 mt-2">{% trans "Hover a size to see per-finger measurements." %}</p>
             </div>
             {% endif %}
 
@@ -110,7 +111,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
                     </svg>
-                    Add to Cart
+                    {% trans "Add to Cart" %}
                 </button>
             </form>
 
@@ -118,11 +119,11 @@
             <div class="flex flex-wrap gap-4">
                 <a href="{% url 'contact' %}?design={{ design.slug }}"
                    class="border-2 border-plum text-plum font-heading font-bold px-5 py-3 sm:px-8 sm:py-4 text-base sm:text-lg rounded-full hover:bg-plum hover:text-white transition-colors">
-                    Enquire About This Design
+                    {% trans "Enquire About This Design" %}
                 </a>
                 <a href="{% url 'gallery' %}?category={{ design.category.slug }}"
                    class="border-2 border-grape text-grape font-heading font-bold px-5 py-3 sm:px-8 sm:py-4 text-base sm:text-lg rounded-full hover:bg-grape hover:text-white transition-colors">
-                    More {{ design.category.name }}
+                    {% blocktrans with cat=design.category.name %}More {{ cat }}{% endblocktrans %}
                 </a>
             </div>
         </div>
@@ -136,7 +137,7 @@
     <div class="absolute inset-0 bg-plum/40 backdrop-blur-sm" id="sizing-modal-backdrop"></div>
     <div class="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between p-5 border-b border-gray-100">
-            <h3 class="font-heading font-bold text-plum text-lg">How to Find Your Size</h3>
+            <h3 class="font-heading font-bold text-plum text-lg">{% trans "How to Find Your Size" %}</h3>
             <button id="sizing-modal-close" class="text-plum/50 hover:text-plum transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -144,7 +145,7 @@
             </button>
         </div>
         <div class="p-5">
-            <img src="{{ MEDIA_URL }}sizing_instructions.jpg" alt="Sizing instructions" class="w-full rounded-xl">
+            <img src="{{ MEDIA_URL }}sizing_instructions.jpg" alt="{% trans 'Sizing instructions' %}" class="w-full rounded-xl">
         </div>
     </div>
 </div>
@@ -156,7 +157,7 @@
     <div class="absolute inset-0 bg-plum/40 backdrop-blur-sm" id="custom-modal-backdrop"></div>
     <div class="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full">
         <div class="flex items-center justify-between p-5 border-b border-gray-100">
-            <h3 class="font-heading font-bold text-plum text-lg">Custom Size</h3>
+            <h3 class="font-heading font-bold text-plum text-lg">{% trans "Custom Size" %}</h3>
             <button id="custom-modal-close" class="text-plum/50 hover:text-plum transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -164,7 +165,7 @@
             </button>
         </div>
         <div class="p-5 space-y-4">
-            <p class="text-sm text-plum/60">Choose a width (mm) for each finger.</p>
+            <p class="text-sm text-plum/60">{% trans "Choose a width (mm) for each finger." %}</p>
 
             {% for finger_label in fingers %}
             <div class="flex items-center justify-between">
@@ -181,7 +182,7 @@
             <button type="button" id="custom-confirm-btn"
                     class="w-full mt-2 bg-gradient-to-r from-orchid to-grape text-white font-heading font-bold
                            py-3 rounded-full hover:from-grape hover:to-plum transition-all">
-                Confirm Custom Size
+                {% trans "Confirm Custom Size" %}
             </button>
         </div>
     </div>

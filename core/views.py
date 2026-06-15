@@ -10,6 +10,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext as _, get_language
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
@@ -58,7 +59,7 @@ def design_detail(request, slug):
     return render(request, 'design_detail.html', {
         'design': design,
         'nail_sizes': nail_sizes,
-        'fingers': ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky'],
+        'fingers': [_('Thumb'), _('Index'), _('Middle'), _('Ring'), _('Pinky')],
     })
 
 
@@ -109,7 +110,7 @@ def add_to_cart(request, slug):
         custom_label=custom_label,
         unit_price=str(design.price),
     )
-    messages.success(request, f'"{design.title}" added to your cart.')
+    messages.success(request, _('"%(title)s" added to your cart.') % {'title': design.title})
     return redirect('design_detail', slug=slug)
 
 
@@ -193,11 +194,11 @@ def _create_checkout_session(request):
 
         parts = []
         if item['shape_name']:
-            parts.append(f'Shape: {item["shape_name"]}')
+            parts.append(_('Shape: %(value)s') % {'value': item["shape_name"]})
         if item.get('custom_label'):
-            parts.append(f'Size: {item["custom_label"]}')
+            parts.append(_('Size: %(value)s') % {'value': item["custom_label"]})
         elif item['size_name']:
-            parts.append(f'Size: {item["size_name"]}')
+            parts.append(_('Size: %(value)s') % {'value': item["size_name"]})
         product_data = {'name': item['design_title']}
         if parts:
             product_data['description'] = ' | '.join(parts)
@@ -211,8 +212,12 @@ def _create_checkout_session(request):
             },
         })
 
+    # Honour the site language toggle on Stripe's hosted checkout page.
+    stripe_locale = 'el' if (get_language() or '').startswith('el') else 'en'
+
     session = stripe.checkout.Session.create(
         mode='payment',
+        locale=stripe_locale,
         line_items=line_items,
         shipping_address_collection={'allowed_countries': settings.ALLOWED_SHIPPING_COUNTRIES},
         shipping_options=[{
@@ -222,7 +227,7 @@ def _create_checkout_session(request):
                     'amount': settings.SHIPPING_FEE_CENTS,
                     'currency': settings.CURRENCY,
                 },
-                'display_name': 'Standard shipping (Greece)',
+                'display_name': _('Standard shipping (Greece)'),
             },
         }],
         success_url=(
@@ -364,7 +369,7 @@ def contact(request):
         form = EnquiryForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Thanks for your enquiry! We\'ll get back to you soon.')
+            messages.success(request, _('Thanks for your enquiry! We\'ll get back to you soon.'))
             return redirect('contact')
     else:
         design_slug = request.GET.get('design')
