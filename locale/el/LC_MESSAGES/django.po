@@ -221,9 +221,6 @@ msgstr "Μέσος"
 msgid "More %(cat)s"
 msgstr "Περισσότερα: %(cat)s"
 
-msgid "Nails That Are Works of Art"
-msgstr "Νύχια που Είναι Έργα Τέχνης"
-
 msgid "Name"
 msgstr "Όνομα"
 
@@ -370,6 +367,9 @@ msgstr "Σχήμα: %(value)s"
 
 msgid "Shipping (Greece)"
 msgstr "Αποστολή (Ελλάδα)"
+
+msgid "Show your style in your own way"
+msgstr "Δείξε το στυλ σου με το δικό σου τρόπο"
 
 msgid "Size"
 msgstr "Μέγεθος"

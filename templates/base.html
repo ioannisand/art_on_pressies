@@ -78,18 +78,18 @@
                 </div>
 
                 <!-- Right: Language + Search + Cart -->
-                <div class="flex items-center space-x-2 sm:space-x-3">
+                <div class="flex items-center space-x-1 sm:space-x-3">
                     <!-- Language toggle (GB / GR) -->
-                    <form action="{% url 'set_language' %}" method="post" class="flex items-center gap-1.5">
+                    <form action="{% url 'set_language' %}" method="post" class="flex items-center gap-1 sm:gap-1.5">
                         {% csrf_token %}
                         <input type="hidden" name="next" value="{{ request.get_full_path }}">
                         <button type="submit" name="language" value="en" title="English"
                                 class="leading-none transition-opacity hover:opacity-100 {% if LANGUAGE_CODE == 'en' %}opacity-100 ring-2 ring-orchid rounded-sm{% else %}opacity-40{% endif %}">
-                            <span class="fi fi-gb text-lg sm:text-xl rounded-sm"></span>
+                            <span class="fi fi-gb text-base sm:text-xl rounded-sm"></span>
                         </button>
                         <button type="submit" name="language" value="el" title="Ελληνικά"
                                 class="leading-none transition-opacity hover:opacity-100 {% if LANGUAGE_CODE == 'el' %}opacity-100 ring-2 ring-orchid rounded-sm{% else %}opacity-40{% endif %}">
-                            <span class="fi fi-gr text-lg sm:text-xl rounded-sm"></span>
+                            <span class="fi fi-gr text-base sm:text-xl rounded-sm"></span>
                         </button>
                     </form>
 

@@ -55,7 +55,7 @@ SINGULAR = {
 
     # ── Home ──
     "Handcrafted Press-On Nails": "Χειροποίητα Press-On Νύχια",
-    "Nails That Are Works of Art": "Νύχια που Είναι Έργα Τέχνης",
+    "Show your style in your own way": "Δείξε το στυλ σου με το δικό σου τρόπο",
     "Handcrafted press-on nails designed with love. Every set is unique, elegant, and made to turn heads.":
         "Χειροποίητα press-on νύχια, φτιαγμένα με αγάπη. Κάθε σετ είναι μοναδικό, κομψό και φτιαγμένο για να τραβάει τα βλέμματα.",
     "View Gallery": "Δες τη Συλλογή",
